@@ -1,0 +1,32 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "CMake: build",
+			"type": "shell",
+			"command": "cmake",
+			"args": ["--build", "${workspaceFolder}/build"],
+			"options": {
+				"cwd": "${workspaceFolder}",
+				"env": {
+					"PATH": "C:\\MinGW\\bin;C:\\Program Files\\CMake\\bin;${env:PATH}"
+				}
+			},
+			"group": { "kind": "build", "isDefault": true },
+			"problemMatcher": ["$gcc"]
+		},
+		{
+			"label": "CMake: clean",
+			"type": "shell",
+			"command": "cmake",
+			"args": ["--build", "${workspaceFolder}/build", "--target", "clean"],
+			"options": {
+				"cwd": "${workspaceFolder}",
+				"env": {
+					"PATH": "C:\\MinGW\\bin;C:\\Program Files\\CMake\\bin;${env:PATH}"
+				}
+			},
+			"problemMatcher": []
+		}
+	]
+}

@@ -1,0 +1,23 @@
+{
+	"version": 3,
+	"configurePresets": [
+		{
+			"name": "mingw-debug",
+			"displayName": "MinGW Makefiles — Debug",
+			"generator": "MinGW Makefiles",
+			"binaryDir": "${sourceDir}/build",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": "Debug",
+				"CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+				"CMAKE_CXX_COMPILER": "C:/MinGW/bin/g++.exe",
+				"CMAKE_MAKE_PROGRAM": "C:/MinGW/bin/mingw32-make.exe"
+			}
+		}
+	],
+	"buildPresets": [
+		{
+			"name": "mingw-debug",
+			"configurePreset": "mingw-debug"
+		}
+	]
+}

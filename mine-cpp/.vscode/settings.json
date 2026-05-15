@@ -1,0 +1,16 @@
+{
+	"cmake.cmakePath": "C:/Program Files/CMake/bin/cmake.exe",
+	"cmake.sourceDirectory": "${workspaceFolder}",
+	"cmake.useCMakePresets": "always",
+	"cmake.environment": {
+		"PATH": "C:\\MinGW\\bin;C:\\Program Files\\CMake\\bin;${env:PATH}"
+	},
+	"cmake.enableLanguageServices": true,
+	"terminal.integrated.env.windows": {
+		"PATH": "C:\\MinGW\\bin;C:\\Program Files\\CMake\\bin;${env:PATH}"
+	},
+	"C_Cpp.default.compileCommands": "${workspaceFolder}/build/compile_commands.json",
+	"C_Cpp.default.compilerPath": "C:/MinGW/bin/g++.exe",
+	"C_Cpp.default.cppStandard": "c++17",
+	"C_Cpp.default.intelliSenseMode": "windows-gcc-x64"
+}

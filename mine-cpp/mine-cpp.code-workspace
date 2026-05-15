@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"terminal.integrated.env.windows": {
+			"PATH": "C:\\MinGW\\bin;C:\\Program Files\\CMake\\bin;${env:PATH}"
+		}
+	}
+}

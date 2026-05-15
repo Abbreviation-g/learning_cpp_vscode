@@ -1,0 +1,15 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Debug mine-cpp",
+			"type": "cppdbg",
+			"request": "launch",
+			"program": "${workspaceFolder}/build/mine-cpp.exe",
+			"cwd": "${workspaceFolder}",
+			"MIMode": "gdb",
+			"miDebuggerPath": "C:/MinGW/bin/gdb.exe",
+			"preLaunchTask": "CMake: build"
+		}
+	]
+}
