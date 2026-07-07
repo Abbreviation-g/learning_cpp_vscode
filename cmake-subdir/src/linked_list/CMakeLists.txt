@@ -12,5 +12,17 @@ add_library(linked_list_utils STATIC
 
 target_include_directories(linked_list_utils
     PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/cmake_subdir_demo/linked_list>
+)
+
+install(TARGETS linked_list_utils
+    EXPORT cmake_subdir_demoTargets
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+install(FILES singly_linked_list.h
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/cmake_subdir_demo/linked_list
 )

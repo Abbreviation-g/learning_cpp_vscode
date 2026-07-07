@@ -48,6 +48,26 @@ cmake --preset mingw
 cmake --build --preset mingw
 ```
 
+## 命令行安装
+
+工程已经配置了 CMake install 规则，可以安装可执行程序、静态库、头文件和导出的
+CMake targets。
+
+安装到临时目录：
+
+```powershell
+cmake --install .\build\mingw --prefix .\build\install
+```
+
+安装后的主要内容：
+
+- `bin/cmake_subdir_demo.exe`
+- `lib/libmessage_utils.a`
+- `lib/libsort_algorithms.a`
+- `lib/liblinked_list_utils.a`
+- `include/cmake_subdir_demo/...`
+- `lib/cmake/cmake_subdir_demo/cmake_subdir_demoTargets.cmake`
+
 ## VS Code Tasks 配置
 
 `.vscode/tasks.json` 定义了三个任务：

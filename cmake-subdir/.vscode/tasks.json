@@ -48,6 +48,24 @@
                 "CMake: build mingw"
             ],
             "problemMatcher": []
+        },
+        {
+            "label": "CMake: install mingw",
+            "type": "shell",
+            "command": "C:\\Program Files\\CMake\\bin\\cmake.exe",
+            "args": [
+                "--install",
+                "${workspaceFolder}\\build\\mingw",
+                "--prefix",
+                "${workspaceFolder}\\build\\install"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": [
+                "CMake: build mingw"
+            ],
+            "problemMatcher": []
         }
     ]
 }
