@@ -299,6 +299,107 @@ cmake_subdir_demo
 其中 `sort_algorithms` 必须早于 `message_utils` 构建；`linked_list_utils` 和
 `message_utils` 之间没有直接依赖关系，它们都完成后才会链接最终可执行程序。
 
+## 当前工具链和 VS Code 配置
+
+当前工程使用 MSYS2 UCRT64 提供的 MinGW-w64 工具链。系统环境变量 `PATH` 需要包含：
+
+```text
+C:\msys64\ucrt64\bin
+```
+
+并且 VS Code 需要在修改 PATH 之后重新启动。否则 VS Code task 仍可能拿到旧环境变量，
+导致找不到 `gcc`、`g++`、`mingw32-make` 或 `gdb`。
+
+### CMakePresets.json
+
+`CMakePresets.json` 中的 `mingw` configure preset 使用：
+
+```json
+{
+  "generator": "MinGW Makefiles",
+  "binaryDir": "${sourceDir}/build/mingw",
+  "cacheVariables": {
+    "CMAKE_CXX_COMPILER": "g++",
+    "CMAKE_MAKE_PROGRAM": "mingw32-make",
+    "CMAKE_C_COMPILER": "gcc",
+    "CMAKE_BUILD_TYPE": "Debug"
+  }
+}
+```
+
+这里没有写死 `C:\msys64\ucrt64\bin\g++.exe` 这类绝对路径，而是通过 PATH 查找工具。
+这样配置更短，也方便以后移动 MSYS2 或切换同名工具链，但前提是 VS Code 启动时已经能
+继承正确 PATH。
+
+关键字段含义：
+
+- `generator`
+  - 使用 `MinGW Makefiles` 生成 Makefile。
+- `binaryDir`
+  - 把 CMake 构建文件生成到 `build/mingw`。
+- `CMAKE_CXX_COMPILER`
+  - 使用 PATH 中的 `g++` 作为 C++ 编译器。
+- `CMAKE_C_COMPILER`
+  - 使用 PATH 中的 `gcc` 作为 C 编译器。
+- `CMAKE_MAKE_PROGRAM`
+  - 使用 PATH 中的 `mingw32-make` 执行构建。
+- `CMAKE_BUILD_TYPE`
+  - 使用 `Debug`，方便 VS Code/GDB 命中断点。
+
+如果从旧的 `C:\MinGW` 工具链切换到 MSYS2 UCRT64，建议删除旧构建缓存：
+
+```powershell
+Remove-Item .\build\mingw -Recurse -Force
+cmake --preset mingw
+```
+
+### VS Code tasks
+
+`.vscode/tasks.json` 中的主要任务关系是：
+
+```text
+CMake: configure mingw
+`-- CMake: build mingw
+    |-- Run: cmake_subdir_demo
+    `-- CMake: install mingw
+
+CMake: configure mingw
+`-- CMake: uninstall mingw
+```
+
+说明：
+
+- `CMake: configure mingw`
+  - 执行 `cmake --preset mingw`。
+- `CMake: build mingw`
+  - 先执行 configure，再执行 `cmake --build --preset mingw`。
+- `Run: cmake_subdir_demo`
+  - 先构建，再运行 `build/mingw/src/cmake_subdir_demo.exe`。
+- `CMake: install mingw`
+  - 先构建，再安装到 `build/install`。
+- `CMake: uninstall mingw`
+  - 先确保 configure 已生成 `uninstall` target，再执行
+    `cmake --build --preset mingw --target uninstall`。
+
+### VS Code launch
+
+`.vscode/launch.json` 使用 `cppdbg` + `gdb`：
+
+```json
+{
+  "type": "cppdbg",
+  "program": "${workspaceFolder}\\build\\mingw\\src\\cmake_subdir_demo.exe",
+  "MIMode": "gdb",
+  "miDebuggerPath": "gdb",
+  "preLaunchTask": "CMake: build mingw"
+}
+```
+
+`miDebuggerPath` 设置为 `gdb`，同样依赖 PATH 解析到 MSYS2 UCRT64 中的
+`C:\msys64\ucrt64\bin\gdb.exe`。
+
+调试启动前会先执行 `CMake: build mingw`，保证当前 exe 是最新构建结果。
+
 ## CMake install 命令行参数
 
 本工程可以通过下面命令安装：

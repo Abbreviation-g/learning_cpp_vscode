@@ -6,7 +6,7 @@
             "name": "Debug cmake_subdir_demo",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceFolder}\\build\\mingw\\src\\cmake_subdir_demo.exe",
+            "program": "${workspaceFolder}\\build\\mingw\\src\\cmake_subdir_demo",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
@@ -21,7 +21,7 @@
                 "programOutput": true
             },
             "MIMode": "gdb",
-            "miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe",
+            "miDebuggerPath": "gdb",
             // 启动调试前先确保程序已经构建。
             "preLaunchTask": "CMake: build mingw",
             "setupCommands": [
