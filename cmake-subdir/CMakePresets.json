@@ -8,7 +8,9 @@
       "binaryDir": "${sourceDir}/build/mingw",
       "cacheVariables": {
         "CMAKE_CXX_COMPILER": "g++",
-        "CMAKE_MAKE_PROGRAM": "C:/MinGW/bin/mingw32-make.exe"
+        "CMAKE_MAKE_PROGRAM": "C:/MinGW/bin/mingw32-make.exe",
+        "CMAKE_C_COMPILER":"gcc",
+        "CMAKE_BUILD_TYPE": "Release"
       }
     }
   ],

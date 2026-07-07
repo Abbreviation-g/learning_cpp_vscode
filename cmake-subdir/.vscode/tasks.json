@@ -1,0 +1,53 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "CMake: configure mingw",
+            "type": "shell",
+            "command": "C:\\Program Files\\CMake\\bin\\cmake.exe",
+            "args": [
+                "--preset",
+                "mingw"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "CMake: build mingw",
+            "type": "shell",
+            "command": "C:\\Program Files\\CMake\\bin\\cmake.exe",
+            "args": [
+                "--build",
+                "--preset",
+                "mingw"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "dependsOn": [
+                "CMake: configure mingw"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "Run: cmake_subdir_demo",
+            "type": "shell",
+            "command": "${workspaceFolder}\\build\\mingw\\src\\cmake_subdir_demo.exe",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": [
+                "CMake: build mingw"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}

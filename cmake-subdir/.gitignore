@@ -19,7 +19,10 @@ Makefile
 
 # Editor and OS files
 .vs/
-.vscode/
+.vscode/*
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/settings.json
 .idea/
 *.user
 *.suo
