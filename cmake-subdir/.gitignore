@@ -1,4 +1,4 @@
-# CMake build outputs
+# CMake 构建输出和缓存文件不进入仓库。
 build/
 cmake-build-*/
 CMakeFiles/
@@ -7,7 +7,7 @@ cmake_install.cmake
 compile_commands.json
 Makefile
 
-# Compiled binaries and objects
+# 编译生成的二进制、库文件和对象文件不进入仓库。
 *.exe
 *.dll
 *.so
@@ -17,9 +17,11 @@ Makefile
 *.o
 *.obj
 
-# Editor and OS files
+# IDE、编辑器和操作系统生成的本地文件不进入仓库。
 .vs/
 .vscode/*
+
+# VS Code 的共享任务/调试配置需要提交，其他个人配置继续忽略。
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/settings.json

@@ -1,4 +1,5 @@
 # Keep linked list code as an independent module under src.
+# 扫描 linked_list 目录中的源文件，生成独立链表静态库。
 file(GLOB LINKED_LIST_SOURCES CONFIGURE_DEPENDS
     ${CMAKE_CURRENT_SOURCE_DIR}/*.c
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cc
@@ -10,12 +11,14 @@ add_library(linked_list_utils STATIC
     ${LINKED_LIST_SOURCES}
 )
 
+# 对外公开 linked_list 目录，调用方可以直接 include "singly_linked_list.h"。
 target_include_directories(linked_list_utils
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
         $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/cmake_subdir_demo/linked_list>
 )
 
+# 安装链表静态库，并加入统一的导出集合。
 install(TARGETS linked_list_utils
     EXPORT cmake_subdir_demoTargets
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -23,6 +26,7 @@ install(TARGETS linked_list_utils
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
+# 安装链表模块公开头文件。
 install(FILES singly_linked_list.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/cmake_subdir_demo/linked_list
 )

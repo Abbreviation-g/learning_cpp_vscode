@@ -1,13 +1,12 @@
-# Keep repository text files normalized while avoiding platform-specific
-# automatic CRLF conversion from Git config.
+# 统一文本文件换行为 LF，避免不同平台提交时产生无意义换行差异。
 * text=auto eol=lf
 
-# Windows scripts should keep CRLF when added later.
+# Windows 脚本保留 CRLF，兼容 cmd/PowerShell 的常见执行习惯。
 *.bat text eol=crlf
 *.cmd text eol=crlf
 *.ps1 text eol=crlf
 
-# Treat generated binaries and archives as binary.
+# 二进制文件不做文本换行处理。
 *.exe binary
 *.dll binary
 *.lib binary

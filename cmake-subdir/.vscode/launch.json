@@ -2,6 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
+            // 使用 MinGW gdb 调试 CMake 构建出的示例程序。
             "name": "Debug cmake_subdir_demo",
             "type": "cppdbg",
             "request": "launch",
@@ -10,14 +11,18 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
+            // false 表示不打开外部控制台，输出通常显示在 Debug Console。
             "externalConsole": false,
+            // 允许 cpptools 为 Windows gdb 设置控制台重定向。
             "avoidWindowsConsoleRedirection": false,
+            // 调试开始时打开 Debug Console，方便查看 stdout。
             "internalConsoleOptions": "openOnSessionStart",
             "logging": {
                 "programOutput": true
             },
             "MIMode": "gdb",
             "miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe",
+            // 启动调试前先确保程序已经构建。
             "preLaunchTask": "CMake: build mingw",
             "setupCommands": [
                 {

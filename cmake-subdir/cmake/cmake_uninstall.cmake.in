@@ -1,7 +1,9 @@
+# install_manifest.txt 由 cmake --install 生成，记录本次安装写出的文件。
 if(NOT EXISTS "@CMAKE_CURRENT_BINARY_DIR@/install_manifest.txt")
     message(FATAL_ERROR "Cannot find install manifest: @CMAKE_CURRENT_BINARY_DIR@/install_manifest.txt")
 endif()
 
+# 将按行保存的安装文件清单转换为 CMake 列表。
 file(READ "@CMAKE_CURRENT_BINARY_DIR@/install_manifest.txt" installed_files)
 string(REGEX REPLACE "\n" ";" installed_files "${installed_files}")
 
@@ -10,10 +12,12 @@ foreach(installed_file ${installed_files})
         continue()
     endif()
 
+    # DESTDIR 常用于打包场景；普通本地卸载时它通常为空。
     set(full_path "$ENV{DESTDIR}${installed_file}")
 
     if(EXISTS "${full_path}" OR IS_SYMLINK "${full_path}")
         message(STATUS "Uninstalling: ${full_path}")
+        # 使用 cmake -E rm -f 保持跨平台删除行为。
         execute_process(
             COMMAND "@CMAKE_COMMAND@" -E rm -f "${full_path}"
             RESULT_VARIABLE remove_result

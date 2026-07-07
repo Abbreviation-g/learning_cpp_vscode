@@ -1,3 +1,4 @@
+# sort 是 utils 的子模块，独立生成 sort_algorithms 静态库。
 add_subdirectory(sort)
 
 # Collect only this directory's utility sources. Submodules are managed by
@@ -13,6 +14,7 @@ add_library(message_utils STATIC
     ${MESSAGE_UTILS_SOURCES}
 )
 
+# BUILD_INTERFACE 用于源码树构建，INSTALL_INTERFACE 用于安装后的导出 target。
 target_include_directories(message_utils
     PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
@@ -24,6 +26,7 @@ target_link_libraries(message_utils
         sort_algorithms
 )
 
+# 安装静态库产物，并加入统一的导出集合。
 install(TARGETS message_utils
     EXPORT cmake_subdir_demoTargets
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -31,6 +34,7 @@ install(TARGETS message_utils
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
+# 安装对外公开的头文件。
 install(FILES message.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/cmake_subdir_demo/utils
 )

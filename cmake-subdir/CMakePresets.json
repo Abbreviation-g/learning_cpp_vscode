@@ -4,6 +4,7 @@
     {
       "name": "mingw",
       "displayName": "MinGW Makefiles",
+      "description": "使用 MinGW Makefiles、g++、mingw32-make.exe 和 Debug 构建类型生成 build/mingw。",
       "generator": "MinGW Makefiles",
       "binaryDir": "${sourceDir}/build/mingw",
       "cacheVariables": {
@@ -17,6 +18,8 @@
   "buildPresets": [
     {
       "name": "mingw",
+      "displayName": "Build with MinGW",
+      "description": "基于 mingw configure preset 构建整个工程。",
       "configurePreset": "mingw"
     }
   ]

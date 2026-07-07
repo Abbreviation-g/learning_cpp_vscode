@@ -10,6 +10,7 @@
 
 namespace {
 
+// 统一打印整型数组，供排序和链表测试复用。
 void print_values(const std::vector<int>& values)
 {
     std::cout << "[";
@@ -22,6 +23,7 @@ void print_values(const std::vector<int>& values)
     std::cout << "]";
 }
 
+// 执行一个排序函数，并用 std::is_sorted 判断排序结果是否正确。
 void run_sort_test(const std::string& name, std::vector<int> (*sort_func)(std::vector<int>), const std::vector<int>& input)
 {
     const std::vector<int> result = sort_func(input);
@@ -30,20 +32,24 @@ void run_sort_test(const std::string& name, std::vector<int> (*sort_func)(std::v
     std::cout << (std::is_sorted(result.begin(), result.end()) ? " PASS" : " FAIL") << std::endl;
 }
 
+// 用 vector 的相等比较简化测试断言。
 bool equals(const std::vector<int>& left, const std::vector<int>& right)
 {
     return left == right;
 }
 
+// 输出统一的 PASS/FAIL 检查结果。
 void print_check(const std::string& name, bool passed)
 {
     std::cout << name << ": " << (passed ? "PASS" : "FAIL") << std::endl;
 }
 
+// 覆盖链表的插入、查找、删除、反转和清空这些基础操作。
 void run_linked_list_test()
 {
     linked_list::SinglyLinkedList list;
 
+    // 构造 1 -> 2 -> 3，验证头插和尾插能正确维护顺序。
     list.push_back(2);
     list.push_back(3);
     list.push_front(1);
@@ -53,10 +59,12 @@ void run_linked_list_test()
     std::cout << std::endl;
     print_check("linked_list push", equals(list.to_vector(), std::vector<int>{1, 2, 3}));
 
+    // 删除中间节点，验证前驱节点和尾指针没有被破坏。
     print_check("linked_list contains 2", list.contains(2));
     print_check("linked_list remove 2", list.remove_first(2));
     print_check("linked_list after remove", equals(list.to_vector(), std::vector<int>{1, 3}));
 
+    // 反转后期望 1 -> 3 -> 4 变成 4 -> 3 -> 1。
     list.push_back(4);
     list.reverse();
 
@@ -75,6 +83,7 @@ int main()
 {
     std::cout << build_message() << std::endl;
 
+    // 所有排序算法使用同一份输入，便于对比输出结果。
     const std::vector<int> values = {9, 4, 6, 2, 8, 1, 5, 3, 7, 0};
 
     run_sort_test("bubble_sort", sort_algorithms::bubble_sort, values);
@@ -85,6 +94,7 @@ int main()
 
     run_linked_list_test();
 
+    // Windows 调试时暂停控制台，便于直接运行 exe 后查看输出。
     system("pause");
     return 0;
 }

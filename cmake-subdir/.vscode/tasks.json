@@ -2,6 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
+            // 配置 CMake 工程，读取 CMakePresets.json 中的 mingw preset。
             "label": "CMake: configure mingw",
             "type": "shell",
             "command": "C:\\Program Files\\CMake\\bin\\cmake.exe",
@@ -15,6 +16,7 @@
             "problemMatcher": []
         },
         {
+            // 默认构建任务：先 configure，再 build 整个工程。
             "label": "CMake: build mingw",
             "type": "shell",
             "command": "C:\\Program Files\\CMake\\bin\\cmake.exe",
@@ -38,6 +40,7 @@
             ]
         },
         {
+            // 运行构建目录中的可执行程序；适合不调试时快速查看输出。
             "label": "Run: cmake_subdir_demo",
             "type": "shell",
             "command": "${workspaceFolder}\\build\\mingw\\src\\cmake_subdir_demo.exe",
@@ -50,6 +53,7 @@
             "problemMatcher": []
         },
         {
+            // 安装任务：先构建，再把 exe/lib/include/cmake targets 安装到 build/install。
             "label": "CMake: install mingw",
             "type": "shell",
             "command": "C:\\Program Files\\CMake\\bin\\cmake.exe",
@@ -68,6 +72,7 @@
             "problemMatcher": []
         },
         {
+            // 卸载任务：执行 CMake 自定义 uninstall target，按 install_manifest.txt 删除安装文件。
             "label": "CMake: uninstall mingw",
             "type": "shell",
             "command": "C:\\Program Files\\CMake\\bin\\cmake.exe",
