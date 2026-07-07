@@ -66,6 +66,25 @@
                 "CMake: build mingw"
             ],
             "problemMatcher": []
+        },
+        {
+            "label": "CMake: uninstall mingw",
+            "type": "shell",
+            "command": "C:\\Program Files\\CMake\\bin\\cmake.exe",
+            "args": [
+                "--build",
+                "--preset",
+                "mingw",
+                "--target",
+                "uninstall"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": [
+                "CMake: configure mingw"
+            ],
+            "problemMatcher": []
         }
     ]
 }

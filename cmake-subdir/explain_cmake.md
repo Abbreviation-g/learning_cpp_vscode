@@ -621,3 +621,213 @@ install(EXPORT cmake_subdir_demoTargets
 当前工程只安装了 targets 文件，还没有生成完整的
 `cmake_subdir_demoConfig.cmake`。如果以后希望其他工程直接使用
 `find_package(cmake_subdir_demo)`，还需要额外增加 package config 文件。
+
+## uninstall 配置说明
+
+CMake 默认提供 `install` 机制，但不默认生成 `uninstall` 目标。也就是说，CMake
+知道如何把文件安装出去，但不会自动知道用户希望如何删除这些文件。
+
+本工程手动增加了一个 `uninstall` target，用来删除上一次 install 记录下来的文件。
+
+### 根目录 CMakeLists.txt 中的配置
+
+根目录 `CMakeLists.txt` 中增加了：
+
+```cmake
+configure_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
+    @ONLY
+)
+```
+
+含义如下：
+
+- `configure_file(...)`
+  - 在 configure 阶段根据模板文件生成一个实际可执行的 CMake 脚本。
+- `${CMAKE_CURRENT_SOURCE_DIR}/cmake/cmake_uninstall.cmake.in`
+  - 输入模板文件，位于源码目录的 `cmake` 文件夹下。
+- `${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake`
+  - 输出脚本文件，生成到当前构建目录中。
+  - 当前 preset 下对应 `build/mingw/cmake_uninstall.cmake`。
+- `@ONLY`
+  - 只替换 `@VAR@` 形式的变量。
+  - 这样可以避免误替换 `${VAR}` 形式的 CMake 变量。
+
+接着定义了自定义 target：
+
+```cmake
+add_custom_target(uninstall
+    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake
+)
+```
+
+含义如下：
+
+- `add_custom_target(uninstall ...)`
+  - 创建一个名为 `uninstall` 的构建目标。
+  - 之后就可以执行 `cmake --build --preset mingw --target uninstall`。
+- `COMMAND ${CMAKE_COMMAND} -P ...`
+  - 调用 CMake 自己执行一个脚本文件。
+- `-P`
+  - 表示以 script mode 运行 CMake 文件。
+  - 这种模式不会重新 configure 工程，只执行脚本里的命令。
+
+### uninstall 脚本模板
+
+模板文件是：
+
+```text
+cmake/cmake_uninstall.cmake.in
+```
+
+首先检查 install manifest 是否存在：
+
+```cmake
+if(NOT EXISTS "@CMAKE_CURRENT_BINARY_DIR@/install_manifest.txt")
+    message(FATAL_ERROR "Cannot find install manifest: @CMAKE_CURRENT_BINARY_DIR@/install_manifest.txt")
+endif()
+```
+
+`install_manifest.txt` 是 CMake 执行 `cmake --install ...` 后生成的文件，里面记录了本次
+安装写出去的所有文件路径。uninstall 正是依靠这个文件知道要删除哪些文件。
+
+如果从未执行过 install，或者构建目录被清理过，那么这个文件可能不存在。此时脚本会报错，
+避免误删其他文件。
+
+然后读取安装清单：
+
+```cmake
+file(READ "@CMAKE_CURRENT_BINARY_DIR@/install_manifest.txt" installed_files)
+string(REGEX REPLACE "\n" ";" installed_files "${installed_files}")
+```
+
+含义如下：
+
+- `file(READ ...)`
+  - 把 `install_manifest.txt` 的内容读到变量 `installed_files`。
+- `string(REGEX REPLACE "\n" ";" ...)`
+  - CMake 列表使用分号 `;` 分隔。
+  - 这一步把按行保存的文件路径转换成 CMake 列表。
+
+接着遍历每个已安装文件：
+
+```cmake
+foreach(installed_file ${installed_files})
+```
+
+如果遇到空行就跳过：
+
+```cmake
+if(installed_file STREQUAL "")
+    continue()
+endif()
+```
+
+然后拼出要删除的完整路径：
+
+```cmake
+set(full_path "$ENV{DESTDIR}${installed_file}")
+```
+
+这里支持 `DESTDIR` 环境变量。`DESTDIR` 常用于打包场景，可以在实际安装路径前面再加一层
+临时根目录。普通本地使用时，`DESTDIR` 为空，所以 `full_path` 就等于 manifest 里的路径。
+
+如果文件存在，就删除：
+
+```cmake
+if(EXISTS "${full_path}" OR IS_SYMLINK "${full_path}")
+    message(STATUS "Uninstalling: ${full_path}")
+    execute_process(
+        COMMAND "@CMAKE_COMMAND@" -E rm -f "${full_path}"
+        RESULT_VARIABLE remove_result
+    )
+```
+
+含义如下：
+
+- `EXISTS "${full_path}"`
+  - 判断普通文件是否存在。
+- `IS_SYMLINK "${full_path}"`
+  - 判断符号链接是否存在。
+- `message(STATUS ...)`
+  - 输出正在卸载的文件。
+- `execute_process(...)`
+  - 执行一个外部命令。
+- `"@CMAKE_COMMAND@" -E rm -f`
+  - 使用 CMake 自带的跨平台文件删除命令。
+  - `-E` 表示执行 CMake helper command。
+  - `rm -f` 表示删除文件，如果不存在也不报错。
+- `RESULT_VARIABLE remove_result`
+  - 保存删除命令的返回值。
+
+如果删除失败，则报错终止：
+
+```cmake
+if(NOT remove_result EQUAL 0)
+    message(FATAL_ERROR "Failed to remove: ${full_path}")
+endif()
+```
+
+如果文件已经不存在，则只输出提示：
+
+```cmake
+else()
+    message(STATUS "Already removed: ${full_path}")
+endif()
+```
+
+### uninstall 的执行方式
+
+命令行执行方式：
+
+```powershell
+cmake --build --preset mingw --target uninstall
+```
+
+含义如下：
+
+- `--build --preset mingw`
+  - 使用 `mingw` build preset 对应的构建目录。
+- `--target uninstall`
+  - 不构建默认目标，而是执行名为 `uninstall` 的自定义 target。
+
+VS Code 中也配置了 task：
+
+```text
+CMake: uninstall mingw
+```
+
+它实际执行的参数是：
+
+```json
+[
+    "--build",
+    "--preset",
+    "mingw",
+    "--target",
+    "uninstall"
+]
+```
+
+该 task 依赖：
+
+```text
+CMake: configure mingw
+```
+
+这样可以确保 `uninstall` target 已经被 CMake 生成。
+
+### 当前 uninstall 的行为
+
+当前 uninstall 会删除 `install_manifest.txt` 中记录的已安装文件，例如：
+
+- `bin/cmake_subdir_demo.exe`
+- `lib/libmessage_utils.a`
+- `lib/libsort_algorithms.a`
+- `lib/liblinked_list_utils.a`
+- `include/cmake_subdir_demo/...`
+- `lib/cmake/cmake_subdir_demo/...`
+
+它只删除文件，不递归删除空目录。因此卸载后可能还会保留空的 `bin`、`lib`、`include`
+目录，这是正常行为，也更安全。
