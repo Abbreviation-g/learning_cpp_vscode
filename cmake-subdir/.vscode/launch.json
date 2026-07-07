@@ -11,14 +11,15 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
-            // false 表示不打开外部控制台，输出通常显示在 Debug Console。
+            // false 表示不打开外部控制台，cppdbg 会使用 VS Code integrated terminal。
             "externalConsole": false,
             // 允许 cpptools 为 Windows gdb 设置控制台重定向。
             "avoidWindowsConsoleRedirection": false,
-            // 调试开始时打开 Debug Console，方便查看 stdout。
-            "internalConsoleOptions": "openOnSessionStart",
+            // 不自动打开 Debug Console，避免它抢到 cppdbg 终端前面。
+            "internalConsoleOptions": "neverOpen",
             "logging": {
-                "programOutput": true
+                // 程序输出交给 cppdbg integrated terminal 显示，不再镜像到 Debug Console。
+                "programOutput": false
             },
             "MIMode": "gdb",
             "miDebuggerPath": "gdb",
