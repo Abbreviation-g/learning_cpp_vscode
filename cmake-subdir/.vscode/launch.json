@@ -11,6 +11,11 @@
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
+            "avoidWindowsConsoleRedirection": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "logging": {
+                "programOutput": true
+            },
             "MIMode": "gdb",
             "miDebuggerPath": "C:\\MinGW\\bin\\gdb.exe",
             "preLaunchTask": "CMake: build mingw",
