@@ -1,0 +1,19 @@
+{
+    "cmake.configureOnOpen": true,
+    "cmake.buildDirectory": "${workspaceFolder}/build",
+    "cmake.cmakePath": "cmake",
+    "cmake.generator": "MinGW Makefiles",
+    "cmake.configureSettings": {
+        "CMAKE_C_COMPILER": "C:/MinGW/bin/gcc.exe",
+        "CMAKE_CXX_COMPILER": "C:/MinGW/bin/g++.exe"
+    },
+    "cmake.configureEnvironment": {
+        "PATH": "C:\\MinGW\\bin;${env:PATH}"
+    },
+    "files.associations": {
+        "*.cpp": "cpp",
+        "*.hpp": "cpp",
+        "*.h": "c"
+    },
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
+}

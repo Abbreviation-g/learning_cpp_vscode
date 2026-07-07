@@ -1,0 +1,12 @@
+build/
+*.user
+.vs/
+*.suo
+*.sdf
+*.opensdf
+*.opendb
+Debug/
+Release/
+x64/
+*.vcxproj*
+.cache

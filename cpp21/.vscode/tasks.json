@@ -1,0 +1,67 @@
+{
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "CMake 配置 (Configure)",
+            "command": "cmake",
+            "args": [
+                "-S",
+                ".",
+                "-B",
+                "build",
+                "-G",
+                "MinGW Makefiles",
+                "-DCMAKE_C_COMPILER=gcc.exe",
+                "-DCMAKE_CXX_COMPILER=g++.exe"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "C:\\MinGW\\bin;${env:PATH}"
+                }
+            },
+            "problemMatcher": [],
+            "detail": "CMake 配置 (MinGW)"
+        },
+        {
+            "type": "shell",
+            "label": "CMake 构建 (Build)",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "build",
+                "--config",
+                "Debug"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "CMake 编译工程",
+            "dependsOn": [
+                "CMake 配置 (Configure)"
+            ]
+        },
+        {
+            "type": "shell",
+            "label": "运行 cpp21",
+            "command": ".\\build\\bin\\cpp21.exe",
+            "args": [],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "detail": "编译并运行 cpp21 (不调试)",
+            "dependsOn": [
+                "CMake 构建 (Build)"
+            ]
+        }
+    ],
+    "version": "2.0.0"
+}
