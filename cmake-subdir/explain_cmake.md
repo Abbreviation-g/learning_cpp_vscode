@@ -9,6 +9,10 @@ cmake-subdir/
 |-- src/
 |   |-- CMakeLists.txt
 |   |-- main.cpp
+|   |-- linked_list/
+|   |   |-- CMakeLists.txt
+|   |   |-- singly_linked_list.cpp
+|   |   `-- singly_linked_list.h
 |   `-- utils/
 |       |-- CMakeLists.txt
 |       |-- message.cpp
@@ -47,10 +51,11 @@ add_subdirectory(src)
 
 ## src 模块
 
-`src/CMakeLists.txt` 首先进入 `utils` 模块：
+`src/CMakeLists.txt` 首先进入两个子模块：
 
 ```cmake
 add_subdirectory(utils)
+add_subdirectory(linked_list)
 ```
 
 然后创建可执行程序目标：
@@ -61,17 +66,18 @@ add_executable(cmake_subdir_demo
 )
 ```
 
-该可执行程序链接工具库：
+该可执行程序链接两个库：
 
 ```cmake
 target_link_libraries(cmake_subdir_demo
     PRIVATE
         message_utils
+        linked_list_utils
 )
 ```
 
-这里的 `PRIVATE` 表示 `cmake_subdir_demo` 自己使用 `message_utils`，但不需要把这个
-依赖继续暴露给其他目标。
+这里的 `PRIVATE` 表示 `cmake_subdir_demo` 自己使用这些库，但不需要把依赖继续暴露给
+其他目标。
 
 ## utils 模块
 
@@ -176,29 +182,69 @@ target_include_directories(sort_algorithms
 #include "sort_algorithms.h"
 ```
 
+## linked_list 模块
+
+`src/linked_list/CMakeLists.txt` 扫描链表模块目录直属的源文件：
+
+```cmake
+file(GLOB LINKED_LIST_SOURCES CONFIGURE_DEPENDS
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.cxx
+)
+```
+
+当前会扫描到 `singly_linked_list.cpp`。
+
+然后创建一个静态库：
+
+```cmake
+add_library(linked_list_utils STATIC
+    ${LINKED_LIST_SOURCES}
+)
+```
+
+并公开 `linked_list` 目录作为头文件目录：
+
+```cmake
+target_include_directories(linked_list_utils
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}
+)
+```
+
+因此，链接了 `linked_list_utils` 的目标可以直接包含：
+
+```cpp
+#include "singly_linked_list.h"
+```
+
 ## Library 依赖关系
 
 目标依赖链如下：
 
 ```text
 cmake_subdir_demo
-`-- message_utils
-    `-- sort_algorithms
+|-- message_utils
+|   `-- sort_algorithms
+`-- linked_list_utils
 ```
 
 对应到 CMake 写法：
 
 ```cmake
-cmake_subdir_demo PRIVATE message_utils
+cmake_subdir_demo PRIVATE message_utils linked_list_utils
 message_utils PUBLIC sort_algorithms
 ```
 
 这表示：
 
-- `cmake_subdir_demo` 直接链接 `message_utils`。
+- `cmake_subdir_demo` 直接链接 `message_utils` 和 `linked_list_utils`。
 - `message_utils` 直接链接 `sort_algorithms`。
 - `sort_algorithms` 的 include 路径会通过 `message_utils` 传递给可执行程序。
-- `main.cpp` 可以同时使用 `message.h` 和 `sort_algorithms.h`。
+- `linked_list_utils` 的 include 路径会直接传递给可执行程序。
+- `main.cpp` 可以同时使用 `message.h`、`sort_algorithms.h` 和 `singly_linked_list.h`。
 
 ## 运行时调用关系
 
@@ -222,8 +268,22 @@ sort_algorithms::quick_sort(...)
 
 这些函数实现在 `sort_algorithms.cpp` 中，属于 `sort_algorithms` 静态库。
 
-最终链接时，可执行程序链接 `message_utils`，而 `message_utils` 又携带对
-`sort_algorithms` 的依赖，因此可执行程序能够解析所有这些函数。
+`main.cpp` 还会创建并测试单向链表：
+
+```cpp
+linked_list::SinglyLinkedList list;
+list.push_back(...);
+list.push_front(...);
+list.remove_first(...);
+list.reverse();
+list.clear();
+```
+
+这些成员函数实现在 `singly_linked_list.cpp` 中，属于 `linked_list_utils` 静态库。
+
+最终链接时，可执行程序会链接 `message_utils` 和 `linked_list_utils`，而
+`message_utils` 又携带对 `sort_algorithms` 的依赖，因此可执行程序能够解析所有
+消息、排序和链表相关函数。
 
 ## 构建顺序
 
@@ -232,7 +292,9 @@ CMake 会按照依赖顺序构建目标：
 ```text
 sort_algorithms
 message_utils
+linked_list_utils
 cmake_subdir_demo
 ```
 
-也就是先构建排序库，再构建工具库，最后构建可执行程序。
+其中 `sort_algorithms` 必须早于 `message_utils` 构建；`linked_list_utils` 和
+`message_utils` 之间没有直接依赖关系，它们都完成后才会链接最终可执行程序。
