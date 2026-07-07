@@ -1,40 +1,38 @@
 # cmake_subdir_demo
 
-This is a small CMake subdirectory demo for MinGW on Windows.
+这是一个在 Windows MinGW 环境下使用 CMake 子目录组织代码的小示例工程。
 
-## Project structure
+## 工程结构
 
-The root `CMakeLists.txt` only defines the project and enters the source
-directory:
+根目录的 `CMakeLists.txt` 只负责定义工程和进入源码目录：
 
 ```cmake
 add_subdirectory(src)
 ```
 
-`src/CMakeLists.txt` adds the `utils` subdirectory, creates the executable, and
-links the static library built by `src/utils/CMakeLists.txt`.
+`src/CMakeLists.txt` 会进入 `utils` 子目录，创建可执行程序，并链接
+`src/utils/CMakeLists.txt` 生成的静态库。
 
-## CMake preset
+## CMake Preset 配置
 
-`CMakePresets.json` defines one configure/build preset named `mingw`.
+`CMakePresets.json` 定义了一个名为 `mingw` 的 configure/build preset。
 
-The configure preset uses:
+该 configure preset 使用：
 
-- Generator: `MinGW Makefiles`
-- Build directory: `build/mingw`
-- C compiler: `gcc`
-- C++ compiler: `g++`
-- Make program: `C:/MinGW/bin/mingw32-make.exe`
-- Build type: `Debug`
+- Generator：`MinGW Makefiles`
+- 构建目录：`build/mingw`
+- C 编译器：`gcc`
+- C++ 编译器：`g++`
+- Make 程序：`C:/MinGW/bin/mingw32-make.exe`
+- 构建类型：`Debug`
 
-Important detail:
+注意：
 
-`MinGW Makefiles` expects MinGW's `mingw32-make.exe`. The MSYS
-`C:/MinGW/msys/1.0/bin/make.exe` program is intended for the `MSYS Makefiles`
-generator and can fail when it receives Windows-style paths from the MinGW
-generator.
+`MinGW Makefiles` 应该搭配 MinGW 自带的 `mingw32-make.exe`。MSYS 的
+`C:/MinGW/msys/1.0/bin/make.exe` 更适合 `MSYS Makefiles` generator；如果和
+`MinGW Makefiles` 混用，可能会因为 Windows 路径和反斜杠处理问题导致构建失败。
 
-## Command line build
+## 命令行构建
 
 ```powershell
 cmake --preset mingw
@@ -42,8 +40,7 @@ cmake --build --preset mingw
 .\build\mingw\src\cmake_subdir_demo.exe
 ```
 
-If the build cache was created with the wrong make program or build type,
-remove the old build directory first:
+如果之前的构建缓存使用了错误的 make 程序或构建类型，可以先删除旧构建目录：
 
 ```powershell
 Remove-Item .\build\mingw -Recurse -Force
@@ -51,33 +48,33 @@ cmake --preset mingw
 cmake --build --preset mingw
 ```
 
-## VS Code tasks
+## VS Code Tasks 配置
 
-`.vscode/tasks.json` defines three tasks:
+`.vscode/tasks.json` 定义了三个任务：
 
 - `CMake: configure mingw`
-  - Runs `C:\Program Files\CMake\bin\cmake.exe --preset mingw`
+  - 执行 `C:\Program Files\CMake\bin\cmake.exe --preset mingw`
 - `CMake: build mingw`
-  - Runs `C:\Program Files\CMake\bin\cmake.exe --build --preset mingw`
-  - Depends on `CMake: configure mingw`
-  - Is the default build task
+  - 执行 `C:\Program Files\CMake\bin\cmake.exe --build --preset mingw`
+  - 依赖 `CMake: configure mingw`
+  - 是默认构建任务
 - `Run: cmake_subdir_demo`
-  - Runs `build\mingw\src\cmake_subdir_demo.exe`
-  - Depends on `CMake: build mingw`
+  - 执行 `build\mingw\src\cmake_subdir_demo.exe`
+  - 依赖 `CMake: build mingw`
 
-In VS Code, use `Terminal > Run Build Task...` to run the default build task.
+在 VS Code 中可以通过 `Terminal > Run Build Task...` 运行默认构建任务。
 
-## VS Code launch
+## VS Code Launch 配置
 
-`.vscode/launch.json` defines one debug configuration:
+`.vscode/launch.json` 定义了一个调试配置：
 
-- Name: `Debug cmake_subdir_demo`
-- Debugger type: `cppdbg`
-- Program: `${workspaceFolder}\build\mingw\src\cmake_subdir_demo.exe`
-- Debugger: `C:\MinGW\bin\gdb.exe`
-- Pre-launch task: `CMake: build mingw`
+- 名称：`Debug cmake_subdir_demo`
+- 调试器类型：`cppdbg`
+- 程序路径：`${workspaceFolder}\build\mingw\src\cmake_subdir_demo.exe`
+- GDB 路径：`C:\MinGW\bin\gdb.exe`
+- 启动前任务：`CMake: build mingw`
 
-The launch config keeps the debug session inside VS Code:
+当前 launch 配置让调试会话留在 VS Code 内部：
 
 ```json
 "externalConsole": false,
@@ -88,6 +85,6 @@ The launch config keeps the debug session inside VS Code:
 }
 ```
 
-With MinGW GDB on Windows, program stdout may appear in the Debug Console
-instead of the Terminal panel. If a separate real console window is preferred,
-set `externalConsole` to `true`.
+在 Windows + MinGW GDB 环境下，程序的 stdout 可能显示在 Debug Console，
+而不是 Terminal 面板。如果希望输出显示在独立控制台窗口，可以把
+`externalConsole` 改为 `true`。
