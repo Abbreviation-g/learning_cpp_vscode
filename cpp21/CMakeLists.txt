@@ -34,3 +34,8 @@ add_executable(cpp17_if_switch
 add_executable(cpp17_structured_binding
     cpp17_structured_binding/main.cpp
 )
+
+# C++17 std::byte 特性演示 target
+add_executable(cpp17_byte
+    cpp17_byte/main.cpp
+)
