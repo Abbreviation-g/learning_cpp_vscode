@@ -16,12 +16,31 @@
         "CMAKE_C_COMPILER": "c++",
         "CMAKE_MAKE_PROGRAM": "ninja"
       }
+    },
+    {
+      "name": "mingw",
+      "displayName": "MinGW Makefiles",
+      "description": "使用 MinGW Makefiles、g++、mingw32-make.exe 和 Debug 构建类型生成 build/mingw。",
+      "generator": "MinGW Makefiles",
+      "binaryDir": "${sourceDir}/build/mingw",
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "g++",
+        "CMAKE_MAKE_PROGRAM": "mingw32-make",
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
     }
   ],
   "buildPresets": [
     {
       "name": "ninja-clang",
       "configurePreset": "ninja-clang"
+    },
+    {
+      "name": "mingw",
+      "displayName": "Build with MinGW",
+      "description": "基于 mingw configure preset 构建整个工程。",
+      "configurePreset": "mingw"
     }
   ]
 }
