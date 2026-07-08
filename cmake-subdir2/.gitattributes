@@ -1,0 +1,20 @@
+# 统一文本文件换行为 LF，避免不同平台提交时产生无意义换行差异。
+* text=auto eol=lf
+
+# Windows 脚本保留 CRLF，兼容 cmd/PowerShell 的常见执行习惯。
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# 二进制文件不做文本换行处理。
+*.exe binary
+*.dll binary
+*.lib binary
+*.a binary
+*.o binary
+*.obj binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.zip binary

@@ -1,0 +1,27 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 20,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "ninja-clang",
+      "displayName": "Ninja with clang++",
+      "generator": "Ninja",
+      "binaryDir": "${sourceDir}/build/ninja-clang",
+      "cacheVariables": {
+        "CMAKE_CXX_COMPILER": "clang++",
+        "CMAKE_C_COMPILER": "c++",
+        "CMAKE_MAKE_PROGRAM": "ninja"
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "ninja-clang",
+      "configurePreset": "ninja-clang"
+    }
+  ]
+}
