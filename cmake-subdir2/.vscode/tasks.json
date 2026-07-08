@@ -1,4 +1,4 @@
-{
+﻿{
   "version": "2.0.0",
   "tasks": [
     {
@@ -32,6 +32,38 @@
       },
       "dependsOn": [
         "CMake: configure (mingw)"
+      ],
+      "problemMatcher": [
+        "$gcc"
+      ]
+    },
+    {
+      "label": "CMake: configure (ninja-clang)",
+      "type": "shell",
+      "command": "cmake",
+      "args": [
+        "--preset",
+        "ninja-clang"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "CMake: build (ninja-clang)",
+      "type": "shell",
+      "command": "cmake",
+      "args": [
+        "--build",
+        "--preset",
+        "ninja-clang"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "dependsOn": [
+        "CMake: configure (ninja-clang)"
       ],
       "problemMatcher": [
         "$gcc"

@@ -21,6 +21,21 @@
           "ignoreFailures": true
         }
       ]
+    },
+    {
+      "name": "Debug cmake_subdir2 (Ninja/Clang)",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/ninja-clang/cmake_subdir2.exe",
+      "args": [],
+      "stopAtEntry": true,
+      "cwd": "${workspaceFolder}",
+      "environment": [],
+      "externalConsole": false,
+      "sourceFileMap": {
+        "C:/source/learning_cpp_vscode/cmake-subdir2": "${workspaceFolder}"
+      },
+      "preLaunchTask": "CMake: build (ninja-clang)"
     }
   ]
 }

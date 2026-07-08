@@ -1,4 +1,4 @@
-{
+﻿{
   "version": 6,
   "cmakeMinimumRequired": {
     "major": 3,
@@ -13,14 +13,15 @@
       "binaryDir": "${sourceDir}/build/ninja-clang",
       "cacheVariables": {
         "CMAKE_CXX_COMPILER": "clang++",
-        "CMAKE_C_COMPILER": "c++",
-        "CMAKE_MAKE_PROGRAM": "ninja"
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_MAKE_PROGRAM": "ninja",
+        "CMAKE_BUILD_TYPE": "Debug"
       }
     },
     {
       "name": "mingw",
       "displayName": "MinGW Makefiles",
-      "description": "使用 MinGW Makefiles、g++、mingw32-make.exe 和 Debug 构建类型生成 build/mingw。",
+      "description": "Use MinGW Makefiles, g++, mingw32-make, and Debug build type.",
       "generator": "MinGW Makefiles",
       "binaryDir": "${sourceDir}/build/mingw",
       "cacheVariables": {
@@ -34,12 +35,14 @@
   "buildPresets": [
     {
       "name": "ninja-clang",
+      "displayName": "Build with Ninja/Clang",
+      "description": "Build the project using the ninja-clang configure preset.",
       "configurePreset": "ninja-clang"
     },
     {
       "name": "mingw",
       "displayName": "Build with MinGW",
-      "description": "基于 mingw configure preset 构建整个工程。",
+      "description": "Build the project using the mingw configure preset.",
       "configurePreset": "mingw"
     }
   ]
