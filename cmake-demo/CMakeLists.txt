@@ -7,8 +7,5 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # 可执行文件
-add_executable(${PROJECT_NAME}
-    src/main.cpp
-    src/utils/message/message.cpp
-    src/utils/sort/sort_algorithms.cpp
-)
+add_executable(${PROJECT_NAME})
+add_subdirectory(src)
