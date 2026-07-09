@@ -1,0 +1,44 @@
+{
+    "version": 6,
+    "configurePresets": [
+        {
+            "name": "mingw",
+            "displayName": "GCC 9.2.0 mingw32",
+            "description": "Using compilers: gcc, g++",
+            "generator": "MinGW Makefiles",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++",
+                "CMAKE_MAKE_PROGRAM": "mingw32-make",
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+        {
+            "name": "ninja-clang",
+            "displayName": "Ninja with clang++",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_CXX_COMPILER": "clang++",
+                "CMAKE_C_COMPILER": "clang",
+                "CMAKE_MAKE_PROGRAM": "ninja",
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "mingwbuild",
+            "displayName": "Build with MinGW",
+            "description": "Build the project using the mingw configure preset.",
+            "configurePreset": "mingw"
+        },
+        {
+            "name": "clangbuild",
+            "displayName": "Build with Ninja/Clang",
+            "description": "Build the project using the ninja-clang configure preset.",
+            "configurePreset": "ninja-clang"
+        }
+    ]
+}
