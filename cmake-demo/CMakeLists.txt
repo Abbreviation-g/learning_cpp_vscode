@@ -9,3 +9,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # 可执行文件
 add_executable(${PROJECT_NAME})
 add_subdirectory(src)
+
+# 主程序直接依赖消息/排序工具库和链表工具库。
+target_link_libraries(${PROJECT_NAME}
+    PRIVATE
+        message_utils
+        sort_utils
+)

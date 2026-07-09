@@ -2,8 +2,8 @@
 #include <vector>
 #include <algorithm>
 
-#include "utils/message/message.h"
-#include "utils/sort/sort_algorithms.h"
+#include "message.h"
+#include "sort_algorithms.h"
 
 static void test_message() {
     std::string message = build_message();
