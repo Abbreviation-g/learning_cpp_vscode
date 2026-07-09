@@ -10,4 +10,5 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_executable(${PROJECT_NAME}
     src/main.cpp
     src/utils/message/message.cpp
+    src/utils/sort/sort_algorithms.cpp
 )
