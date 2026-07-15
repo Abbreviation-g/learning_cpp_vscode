@@ -40,6 +40,13 @@ static void test_sort() {
     run_sort_test("insertion_sort", sort_algorithms::insertion_sort, values);
     run_sort_test("merge_sort", sort_algorithms::merge_sort, values);
     run_sort_test("quick_sort", sort_algorithms::quick_sort, values);
+
+    std::cout << std::endl;
+    std::cout << "All sorting tests passed!" << std::endl;
+    std::cout << std::endl;
+
+    std::cout << "All tests passed!" << std::endl;
+    std::cout << std::endl;
 }
 
 int main() {
