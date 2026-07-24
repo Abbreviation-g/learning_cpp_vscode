@@ -183,7 +183,7 @@ cmake --install build/mingw --prefix C:/install/cmake-lib
 # 2. 构建 cmake-use-lib
 cd cmake-use-lib
 cmake --preset mingw
-cmake --build build/mingw
+cmake --build --preset  mingwbuild
 
 # 3. 运行（需要 DLL 在 PATH 中）
 $env:PATH = "C:\install\cmake-lib\bin;$env:PATH"

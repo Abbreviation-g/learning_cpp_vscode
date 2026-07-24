@@ -1,0 +1,13 @@
+CompileFlags:
+  CompilationDatabase: build/mingw
+  Add:
+    - "-IC:/install/cmake-lib/include"
+
+Diagnostics:
+  # 关闭可能由外部库头文件引起的无关警告
+  Suppress:
+    - "pp_file_not_found"
+
+Index:
+  # 后台索引线程数，0 表示使用 CPU 核心数
+  Background: Build
