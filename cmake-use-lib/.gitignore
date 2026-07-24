@@ -19,8 +19,8 @@ Makefile
 *.obj
 
 # IDE、编辑器和操作系统生成的本地文件不进入仓库。
-.vs/
-.vscode/*
+#.vs/
+#.vscode/*
 
 # VS Code 的共享任务/调试配置需要提交，其他个人配置继续忽略。
 !.vscode/tasks.json

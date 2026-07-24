@@ -13,6 +13,7 @@
                 "CMAKE_MAKE_PROGRAM": "mingw32-make",
                 "CMAKE_BUILD_TYPE": "Debug",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES": "OFF",
                 "CMAKE_PREFIX_PATH": "C:/install/cmake-lib"
             }
         }
