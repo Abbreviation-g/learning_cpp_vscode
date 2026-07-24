@@ -1,0 +1,12 @@
+{
+    "terminal.integrated.profiles.windows": {
+        "PowerShell 7": {
+            "args": [
+                "-NoExit",
+                "-Command",
+                "chcp 65001 | Out-Null"
+            ],
+            "path": "C:\\sw\\PowerShell-7.4.17\\pwsh.exe"
+        }
+    }
+}
