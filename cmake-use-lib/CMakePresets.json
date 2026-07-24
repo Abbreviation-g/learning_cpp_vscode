@@ -1,0 +1,27 @@
+{
+    "version": 6,
+    "configurePresets": [
+        {
+            "name": "mingw",
+            "displayName": "GCC 9.2.0 mingw32",
+            "description": "使用 MinGW 编译，请先安装 cmake-lib 并修改 CMAKE_PREFIX_PATH",
+            "generator": "MinGW Makefiles",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++",
+                "CMAKE_MAKE_PROGRAM": "mingw32-make",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_PREFIX_PATH": "C:/install/cmake-lib"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "mingwbuild",
+            "displayName": "Build with MinGW",
+            "configurePreset": "mingw"
+        }
+    ]
+}
