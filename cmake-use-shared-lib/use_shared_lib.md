@@ -250,7 +250,7 @@ Index:
 例如使用 `D:/sdk/cmake-lib`，以下命令从仓库根目录开始执行：
 
 ```powershell
-$sharedLibPrefix = "D:/sdk/cmake-lib"
+$sharedLibPrefix = "C:/install/cmake-lib"
 
 Set-Location .\cmake-lib
 cmake --preset mingw
@@ -261,7 +261,7 @@ Set-Location ..\cmake-use-lib
 cmake --fresh --preset mingw "-DCMAKE_PREFIX_PATH=$sharedLibPrefix"
 cmake --build --preset mingwbuild
 
-$env:PATH = "$(Join-Path $sharedLibPrefix 'bin');$env:PATH"
+$env:PATH = "$sharedLibPrefix/bin;$env:PATH"
 .\build\mingw\cmake-use-lib.exe
 ```
 
