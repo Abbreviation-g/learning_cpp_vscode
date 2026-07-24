@@ -1,0 +1,8 @@
+CompileFlags:
+  CompilationDatabase: build/mingw
+  Add:
+    - "-IC:/install/cmake-static-lib/include"
+
+Index:
+  # 启用后台索引，以便提供跨文件跳转和补全。
+  Background: Build

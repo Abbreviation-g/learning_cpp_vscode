@@ -1,0 +1,27 @@
+{
+    "version": 6,
+    "configurePresets": [
+        {
+            "name": "mingw",
+            "displayName": "MinGW GCC",
+            "description": "使用 MinGW 构建；请先安装 cmake-static-lib，必要时覆盖 CMAKE_PREFIX_PATH",
+            "generator": "MinGW Makefiles",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_CXX_COMPILER": "g++",
+                "CMAKE_MAKE_PROGRAM": "mingw32-make",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES": "OFF",
+                "CMAKE_PREFIX_PATH": "C:/install/cmake-static-lib"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "mingwbuild",
+            "displayName": "Build with MinGW",
+            "configurePreset": "mingw"
+        }
+    ]
+}
