@@ -4,27 +4,49 @@ file(GLOB SORT_UTILS_SOURCES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/*.cxx"
 )
 
-add_library(my_sort_static_lib STATIC
+set(CUR_TARGET_NAME my_sort_static_lib)
+
+add_library(${CUR_TARGET_NAME} STATIC
     ${SORT_UTILS_SOURCES}
 )
 
-#https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html
+# 跨平台安装目录变量：BINDIR / LIBDIR / INCLUDEDIR / DATAROOTDIR
+# https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html
 include(GNUInstallDirs)
-# 常见变量：
-# ${CMAKE_INSTALL_BINDIR}    → bin
-# ${CMAKE_INSTALL_LIBDIR}    → lib / lib64
-# ${CMAKE_INSTALL_INCLUDEDIR} → include
-# ${CMAKE_INSTALL_DATAROOTDIR} → share
 
-# https://cmake.org/cmake/help/latest/command/install.html#targets
-INSTALL(TARGETS my_sort_static_lib
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+# 构建期用源码目录，安装后用标准 include 路径
+target_include_directories(${CUR_TARGET_NAME}
+    PUBLIC
+        "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
+        "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"
 )
 
-INSTALL(FILES sort_algorithms.h 
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+# 1. 安装静态库 + 导出目标信息
+install(
+    TARGETS ${CUR_TARGET_NAME}
+    EXPORT ${CUR_TARGET_NAME}-targets
+    ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+    INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
 )
 
-INSTALL(FILES ../readme.md
-    DESTINATION ${CMAKE_INSTALL_INFODIR}
+# 2. 安装 CMake 自动生成的导入目标文件
+install(
+    EXPORT ${CUR_TARGET_NAME}-targets
+    FILE ${CUR_TARGET_NAME}-targets.cmake
+    NAMESPACE ${CUR_TARGET_NAME}::
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${CUR_TARGET_NAME}"
+)
+
+# 3. 安装手写的包配置文件，消费端通过 find_package() 加载
+install(
+    FILES
+        "${CMAKE_CURRENT_SOURCE_DIR}/${CUR_TARGET_NAME}-config.cmake"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/${CUR_TARGET_NAME}"
+)
+
+# 4. 安装公开头文件到带命名空间的子目录
+install(
+    FILES
+        sort_algorithms.h
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/${CUR_TARGET_NAME}"
 )

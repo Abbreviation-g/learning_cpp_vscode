@@ -12,7 +12,7 @@
                 "CMAKE_BUILD_TYPE": "Debug",
                 "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
                 "CMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES": "OFF",
-                "CMAKE_PREFIX_PATH": "C:\\install\\my_sort_static_lib"
+                "CMAKE_PREFIX_PATH": "C:/install/my_sort_static_lib"
             }
         }
     ],
