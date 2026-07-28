@@ -12,7 +12,8 @@
                 "CMAKE_CXX_COMPILER": "g++",
                 "CMAKE_MAKE_PROGRAM": "mingw32-make",
                 "CMAKE_BUILD_TYPE": "Debug",
-                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_INSTALL_PREFIX": "C:/install/my_sort_static_lib"
             }
         }
     ],
