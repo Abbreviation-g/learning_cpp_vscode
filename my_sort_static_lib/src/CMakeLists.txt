@@ -8,15 +8,23 @@ add_library(my_sort_static_lib STATIC
     ${SORT_UTILS_SOURCES}
 )
 
+#https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html
+include(GNUInstallDirs)
+# 常见变量：
+# ${CMAKE_INSTALL_BINDIR}    → bin
+# ${CMAKE_INSTALL_LIBDIR}    → lib / lib64
+# ${CMAKE_INSTALL_INCLUDEDIR} → include
+# ${CMAKE_INSTALL_DATAROOTDIR} → share
+
 # https://cmake.org/cmake/help/latest/command/install.html#targets
 INSTALL(TARGETS my_sort_static_lib
-    ARCHIVE DESTINATION lib
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
 )
 
 INSTALL(FILES sort_algorithms.h 
-    DESTINATION include
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
 INSTALL(FILES ../readme.md
-    DESTINATION doc
+    DESTINATION ${CMAKE_INSTALL_INFODIR}
 )
