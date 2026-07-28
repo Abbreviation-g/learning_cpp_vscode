@@ -9,9 +9,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_executable(use_my_sort_static_lib src/main.cpp)
 
 # 通过 CMAKE_PREFIX_PATH 查找已安装的库（路径在 CMakePresets.json 中配置）
-find_package(my_sort_static_lib REQUIRED)
+find_package(my_sort_shared_lib REQUIRED)
 
-# 链接导入的静态库目标
+# 链接导入的动态库目标
 target_link_libraries(use_my_sort_static_lib PRIVATE
-    my_sort_static_lib::my_sort_static_lib
+    my_sort_shared_lib::my_sort_shared_lib
 )

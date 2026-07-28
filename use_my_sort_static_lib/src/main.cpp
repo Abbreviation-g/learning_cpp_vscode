@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-#include <my_sort_static_lib/sort_algorithms.h>
+#include <my_sort_shared_lib/sort_algorithms.h>
 
 int main()
 {
