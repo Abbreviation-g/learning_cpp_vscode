@@ -1,0 +1,9 @@
+file(GLOB SORT_UTILS_SOURCES CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.cc"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.cxx"
+)
+
+add_library(my_sort_static_lib STATIC
+    ${SORT_UTILS_SOURCES}
+)
