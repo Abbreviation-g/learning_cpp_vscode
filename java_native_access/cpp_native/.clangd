@@ -1,8 +1,7 @@
 CompileFlags:
   CompilationDatabase: build/mingw
   Add:
-    - "-IC:\\sw\\jdk-17.0.4.1\\include" 
-    - "-IC:\\sw\\jdk-17.0.4.1\\include\\win32"
+
 
 Index:
   # 启用后台索引，以便提供跨文件跳转和补全。
