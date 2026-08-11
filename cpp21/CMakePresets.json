@@ -1,0 +1,28 @@
+{
+    "version": 6,
+    "configurePresets": [
+        {
+            "name": "mingw",
+            "displayName": "GCC 16.1.0",
+            "description": "Using compilers: gcc, g++",
+            "generator": "MinGW Makefiles",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++",
+                "CMAKE_MAKE_PROGRAM": "mingw32-make",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+                "CMAKE_INSTALL_PREFIX": "C:/install/my_sort_static_lib"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "mingwbuild",
+            "displayName": "Build with MinGW",
+            "description": "Build the project using the mingw configure preset.",
+            "configurePreset": "mingw"
+        }
+    ]
+}

@@ -1,19 +1,14 @@
 {
-    "cmake.configureOnOpen": true,
-    "cmake.buildDirectory": "${workspaceFolder}/build",
-    "cmake.cmakePath": "cmake",
-    "cmake.generator": "MinGW Makefiles",
-    "cmake.configureSettings": {
-        "CMAKE_C_COMPILER": "C:/MinGW/bin/gcc.exe",
-        "CMAKE_CXX_COMPILER": "C:/MinGW/bin/g++.exe"
+    "C_Cpp.intelliSenseEngine": "default",
+    "terminal.integrated.profiles.windows": {
+        "PowerShell 7": {
+            "args": [
+                "-NoExit",
+                "-Command",
+                "chcp 65001 | Out-Null; [Console]::OutputEncoding = [System.Text.Encoding]::UTF8; [Console]::InputEncoding = [System.Text.Encoding]::UTF8"
+            ],
+            "path": "C:\\sw\\PowerShell-7.4.17\\pwsh.exe"
+        }
     },
-    "cmake.configureEnvironment": {
-        "PATH": "C:\\MinGW\\bin;${env:PATH}"
-    },
-    "files.associations": {
-        "*.cpp": "cpp",
-        "*.hpp": "cpp",
-        "*.h": "c"
-    },
-    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
+    "terminal.integrated.defaultProfile.windows": "PowerShell 7",
 }
