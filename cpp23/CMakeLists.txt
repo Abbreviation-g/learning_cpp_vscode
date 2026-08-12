@@ -44,3 +44,6 @@ add_executable(cpp17_byte
 add_executable(cpp17_charconv
     cpp17_charconv/main.cpp
 )
+
+# C++20中头文件span的使用
+add_executable(cpp20_span cpp20_span/main.cpp)

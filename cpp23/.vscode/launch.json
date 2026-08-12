@@ -114,6 +114,25 @@
                     "ignoreFailures": true
                 }
             ]
+        },
+        {
+            "name": "调试 cpp20_span (F5)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/mingw/bin/cpp20_span",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
         }
     ]
 }
