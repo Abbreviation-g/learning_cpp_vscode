@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.16)
-project(cpp21 VERSION 1.0.0 LANGUAGES CXX)
+project(cpp23 VERSION 1.0.0 LANGUAGES CXX)
 
 # C++ 标准设置
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
@@ -38,4 +38,9 @@ add_executable(cpp17_structured_binding
 # C++17 std::byte 特性演示 target
 add_executable(cpp17_byte
     cpp17_byte/main.cpp
+)
+
+# C++17 std::charconv 特性演示 target
+add_executable(cpp17_charconv
+    cpp17_charconv/main.cpp
 )
