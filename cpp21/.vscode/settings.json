@@ -5,7 +5,7 @@
             "args": [
                 "-NoExit",
                 "-Command",
-                "chcp 65001 | Out-Null; [Console]::OutputEncoding = [System.Text.Encoding]::UTF8; [Console]::InputEncoding = [System.Text.Encoding]::UTF8"
+                "chcp 65001 | Out-Null;"
             ],
             "path": "C:\\sw\\PowerShell-7.4.17\\pwsh.exe"
         }
