@@ -5,7 +5,8 @@
 #include <vector>
 #include <cstring>
 
-
+// https://blog.csdn.net/fengbingchun/article/details/143082300
+// C++20中头文件span的使用
 //  <span>是C++20中新增加的头文件，此头文件是containers库的一部分。包括：
 
 //   1.模板类std::span：连续对象序列的非拥有视图(view)。std::span可以具有static

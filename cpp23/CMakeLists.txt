@@ -47,3 +47,15 @@ add_executable(cpp17_charconv
 
 # C++20中头文件span的使用
 add_executable(cpp20_span cpp20_span/main.cpp)
+
+# C++20中头文件syncstream的使用
+add_executable(cpp20_syncstream cpp20_syncstream/main.cpp)
+
+# C++20中线程类std::jthread的使用
+add_executable(cpp20_jthread cpp20_jthread/main.cpp)
+
+# C++20中头文件source_location的使用
+add_executable(cpp20_source_location cpp20_source_location/main.cpp)
+
+# C++20中头文件source_location的使用
+add_executable(cpp20_ranges cpp20_ranges/main.cpp)
