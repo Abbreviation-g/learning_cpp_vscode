@@ -1,5 +1,5 @@
 {
-    "C_Cpp.intelliSenseEngine": "default",
+    "C_Cpp.intelliSenseEngine": "disabled",
     "terminal.integrated.profiles.windows": {
         "PowerShell 7": {
             "args": [
@@ -10,5 +10,8 @@
             "path": "C:\\sw\\PowerShell-7.4.17\\pwsh.exe"
         }
     },
-    "terminal.integrated.defaultProfile.windows": "PowerShell 7",
+    // "clangd.arguments": [
+    //     "--compile-commands-dir=build/mingw"
+    // ],
+    "terminal.integrated.defaultProfile.windows": "PowerShell 7"
 }

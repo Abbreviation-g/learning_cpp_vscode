@@ -1,5 +1,5 @@
 CompileFlags:
-  CompilationDatabase: build/mingw
+  CompilationDatabase: build/mingw/compile_commands.json
   # Add:
   #   - "-IC:/install/my_sort_static_lib/include"
 
