@@ -9,10 +9,12 @@
             "path": "C:\\sw\\PowerShell-7.4.17\\pwsh.exe"
         }
     },
-    // clangd is configured via .clangd in the workspace root.
-    // If you want to override it in VS Code settings, uncomment this block.
+    // clangd is configured via .clangd in the workspace root,
+    // but --query-driver must be set here as a clangd launch argument
+    // so clangd can query the real MinGW compiler for its include paths.
     // "clangd.arguments": [
-    //     "--compile-commands-dir=build/mingw"
+    //     "--compile-commands-dir=build/mingw",
+    //     "--query-driver=C:/msys64/ucrt64/bin/g++.exe"
     // ],
     "terminal.integrated.defaultProfile.windows": "PowerShell 7"
 }

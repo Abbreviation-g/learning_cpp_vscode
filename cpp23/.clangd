@@ -5,8 +5,11 @@ CompileFlags:
   #   - "-std=c++23"
   Add:
     - "-std=c++23"
+    - "--target=x86_64-w64-mingw32"
+    # - "--gcc-toolchain=C:/msys64/ucrt64"
   # Add:
   #   - "-IC:/install/my_sort_static_lib/include"
+  # Compiler: C:/msys64/ucrt64/bin/g++.exe
 
 Index:
   # 启用后台索引，以便提供跨文件跳转和补全。
