@@ -1,5 +1,10 @@
 CompileFlags:
   CompilationDatabase: build/mingw/compile_commands.json
+  # clangd 不能正确理解 -std=c++23 从 compile_commands.json 传来的参数，但可以通过 .clangd 拦截并替换成 -std=gnu++2b。
+  # Remove:
+  #   - "-std=c++23"
+  Add:
+    - "-std=c++23"
   # Add:
   #   - "-IC:/install/my_sort_static_lib/include"
 

@@ -10,6 +10,8 @@
             "path": "C:\\sw\\PowerShell-7.4.17\\pwsh.exe"
         }
     },
+    // clangd is configured via .clangd in the workspace root.
+    // If you want to override it in VS Code settings, uncomment this block.
     // "clangd.arguments": [
     //     "--compile-commands-dir=build/mingw"
     // ],
