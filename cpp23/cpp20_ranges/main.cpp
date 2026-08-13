@@ -86,23 +86,24 @@ int test_ranges_classes()
 	// std::ranges::empty_view
 	std::ranges::empty_view<long> e;
 	static_assert(std::ranges::empty(e));
-	static_assert(0 == e.size());
-	static_assert(nullptr == e.data());
-	static_assert(nullptr == e.begin());
-	static_assert(nullptr == e.end());
+	static_assert(0 == std::ranges::empty_view<long>::size());
+	static_assert(nullptr == std::ranges::empty_view<long>::data());
+	static_assert(nullptr == std::ranges::empty_view<long>::begin());
+	static_assert(nullptr == std::ranges::empty_view<long>::end());
  
 	// std::ranges::single_view
 	constexpr std::ranges::single_view sv1{ std::numbers::pi };
 	static_assert(sv1);
-	static_assert(not sv1.empty());
+	static_assert(not std::ranges::single_view<double>::empty());
 	std::cout << "data:" << *sv1.data() << ";begin:" << *sv1.begin() << ";size:" << sv1.size() << ";distance:" << std::distance(sv1.begin(), sv1.end()) << std::endl; // data:3.14159;begin:3.14159;size:1;distance:1
  
 	std::ranges::single_view<std::tuple<int, double, std::string>> sv2{ {1, std::numbers::sqrt2, "^-^"} };
 	std::cout << "value:" << std::get<0>(sv2[0]) << "," << std::get<1>(sv2[0]) << "," << std::get<2>(sv2[0]) << std::endl; // value:1,1.41421,^-^
  
 	// std::ranges::views::iota/std::ranges::iota_view
-	for (auto i : std::ranges::iota_view{ 1, 10 })
+	for (auto i : std::ranges::iota_view{ 1, 10 }) {
 		std::cout << i << ' '; // 1 2 3 4 5 6 7 8 9
+	}
 	std::cout << std::endl;
  
 	for (auto i : std::ranges::views::iota(1, 10))

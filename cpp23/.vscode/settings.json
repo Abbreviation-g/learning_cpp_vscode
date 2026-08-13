@@ -15,6 +15,7 @@
     // clangd is configured via .clangd in the workspace root,
     // but --query-driver must be set here as a clangd launch argument
     // so clangd can query the real MinGW compiler for its include paths.
+    "clangd.path": "C:\\sw\\clang+llvm-22.1.0-x86_64-pc-windows-msvc\\bin\\clangd.exe",
     "clangd.arguments": [
         "--compile-commands-dir=build/mingw",
         "--query-driver=C:/msys64/ucrt64/bin/g++.exe",

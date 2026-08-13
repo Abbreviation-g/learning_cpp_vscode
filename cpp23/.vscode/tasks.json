@@ -59,7 +59,7 @@
         {
             "label": "clang-tidy: check all sources",
             "type": "process",
-            "command": "clang-tidy",
+            "command": "C:\\sw\\clang+llvm-22.1.0-x86_64-pc-windows-msvc\\bin\\clang-tidy.exe",
             "args": [
                 "-p",
                 "build/mingw",
