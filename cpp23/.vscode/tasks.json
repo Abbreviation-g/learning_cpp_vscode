@@ -55,6 +55,34 @@
                 }
             },
             "problemMatcher": []
+        },
+        {
+            "label": "clang-tidy: check all sources",
+            "type": "process",
+            "command": "clang-tidy",
+            "args": [
+                "-p",
+                "build/mingw",
+                "${workspaceFolder}/src/main.cpp",
+                "${workspaceFolder}/cpp17_lambda/main.cpp",
+                "${workspaceFolder}/cpp17_if_switch/main.cpp",
+                "${workspaceFolder}/cpp17_structured_binding/main.cpp",
+                "${workspaceFolder}/cpp17_byte/main.cpp",
+                "${workspaceFolder}/cpp17_charconv/main.cpp",
+                "${workspaceFolder}/cpp20_span/main.cpp",
+                "${workspaceFolder}/cpp20_syncstream/main.cpp",
+                "${workspaceFolder}/cpp20_jthread/main.cpp",
+                "${workspaceFolder}/cpp20_ranges/main.cpp",
+                "${workspaceFolder}/cpp20_source_location/main.cpp",
+                "--",
+                "-std=c++23",
+                "--target=x86_64-w64-mingw32",
+                "--gcc-toolchain=C:/msys64/ucrt64"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
         }
     ]
 }

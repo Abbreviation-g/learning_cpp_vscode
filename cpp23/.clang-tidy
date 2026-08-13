@@ -1,0 +1,33 @@
+---
+# clang-tidy configuration for this project
+# A practical, moderate set of checks covering correctness, performance
+# and modern C++ style. Disables the noisy identifier-length default so
+# short loop variables (i, n, v) are allowed.
+Checks: >-
+  -*,
+  clang-analyzer-*,
+  bugprone-*,
+  performance-*,
+  modernize-*,
+  readability-*,
+  cppcoreguidelines-*,
+  hicpp-*,
+  -readability-identifier-length
+
+# Treat no warnings as errors by default (empty means none).
+WarningsAsErrors: ''
+
+# Run checks on all headers under the project root.
+HeaderFilterRegex: '.*'
+
+# Use the project's .clang-format if present, otherwise default style.
+FormatStyle: file
+
+CheckOptions:
+  - key: modernize-use-trailing-return-type.IgnoreMacros
+    value: 'true'
+  - key: readability-identifier-naming.StrictMode
+    value: 'false'
+  - key: readability-identifier-length.MinimumVariableNameLength
+    value: '3'
+...
