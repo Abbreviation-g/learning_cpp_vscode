@@ -3,7 +3,7 @@
     "tasks": [
         {
             "label": "CMake: configure (mingw)",
-            "type": "shell",
+            "type": "process",
             "command": "cmake",
             "args": [
                 "--preset",
@@ -16,7 +16,7 @@
         },
         {
             "label": "CMake: build (mingw build)",
-            "type": "shell",
+            "type": "process",
             "command": "cmake",
             "args": [
                 "--build",
@@ -45,7 +45,14 @@
                 "clean"
             ],
             "options": {
-                "cwd": "${workspaceFolder}"
+                "cwd": "${workspaceFolder}",
+                "shell": {
+                    "executable": "C:\\sw\\PowerShell-7.4.17\\pwsh.exe",
+                    "args": [
+                        "-NoLogo",
+                        "-NoProfile"
+                    ]
+                }
             },
             "problemMatcher": []
         }
