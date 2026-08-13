@@ -4,7 +4,9 @@
 #include <iostream>
 #include <list>
 #include <map>
+#include <numbers>
 #include <ranges>
+#include <sstream>
 #include <string>
 #include <vector>
 
@@ -94,7 +96,7 @@ int test_ranges_classes()
 	// std::ranges::single_view
 	constexpr std::ranges::single_view sv1{ std::numbers::pi };
 	static_assert(sv1);
-	static_assert(not std::ranges::single_view<double>::empty());
+	static_assert(not sv1.empty());
 	std::cout << "data:" << *sv1.data() << ";begin:" << *sv1.begin() << ";size:" << sv1.size() << ";distance:" << std::distance(sv1.begin(), sv1.end()) << std::endl; // data:3.14159;begin:3.14159;size:1;distance:1
  
 	std::ranges::single_view<std::tuple<int, double, std::string>> sv2{ {1, std::numbers::sqrt2, "^-^"} };
