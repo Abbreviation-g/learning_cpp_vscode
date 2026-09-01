@@ -27,7 +27,8 @@
                 "cwd": "${workspaceFolder}"
             },
             "dependsOn": [
-                "CMake: configure (mingw)"
+                "CMake: configure (mingw)",
+                "GCC: build std module (mingw)"
             ],
             "problemMatcher": [
                 "$gcc"
@@ -81,6 +82,22 @@
             ],
             "options": {
                 "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "GCC: build std module (mingw)",
+            "type": "process",
+            "command": "C:/msys64/ucrt64/bin/g++.exe",
+            "args": [
+                "-std=c++23",
+                "-fmodules-ts",
+                "-fsearch-include-path",
+                "-c",
+                "bits/std.cc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/build/mingw"
             },
             "problemMatcher": []
         }
