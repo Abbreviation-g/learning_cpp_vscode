@@ -21,5 +21,7 @@
         // "--query-driver=C:/msys64/ucrt64/bin/g++.exe",
         "--clang-tidy"
     ],
-    "terminal.integrated.defaultProfile.windows": "PowerShell 7"
+    "terminal.integrated.defaultProfile.windows": "PowerShell 7",
+    "C_Cpp.formatting": "clangFormat",
+    "clang-format.executable": "C:/sw/clang+llvm-22.1.0-x86_64-pc-windows-msvc/bin/clang-format.exe"
 }

@@ -72,12 +72,20 @@ add_executable(cpp20_ranges cpp20_ranges/main.cpp)
 # (gcm.cache/std.gcm 及 bits/stdc++.h.gcm) 也位于该目录, 默认模块映射
 # 即可找到, 无需额外 mapper。
 # ============================================================================
-add_executable(cpp23_import cpp23_import/main.cpp)
-if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    # GNU 工具链: 启用模块编译支持
-    target_compile_options(cpp23_import PRIVATE -fmodules-ts)
-elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
-    # Clang: 模块支持需显式启用 (若使用 libc++ 的 std 模块场景)
-    target_compile_options(cpp23_import PRIVATE -fmodules)
-endif()
+# add_executable(cpp23_import cpp23_import/main.cpp)
+# if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+#     # GNU 工具链: 启用模块编译支持
+#     target_compile_options(cpp23_import PRIVATE -fmodules-ts)
+# elseif(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+#     # Clang: 模块支持需显式启用 (若使用 libc++ 的 std 模块场景)
+#     target_compile_options(cpp23_import PRIVATE -fmodules)
+# endif()
 
+# c++14 二进制字面量
+add_executable(cpp14_binary_literal cpp14_binary_literal/main.cpp)
+
+# c++11 自定义字面量
+add_executable(cpp11_custom_literal cpp11_custom_literal/main.cpp)
+
+# c++14 自定义字面量
+add_executable(cpp14_custom_literal cpp14_custom_literal/main.cpp)
