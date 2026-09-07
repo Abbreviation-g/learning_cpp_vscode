@@ -89,3 +89,6 @@ add_executable(cpp11_custom_literal cpp11_custom_literal/main.cpp)
 
 # c++14 自定义字面量
 add_executable(cpp14_custom_literal cpp14_custom_literal/main.cpp)
+
+# c++14 constexpr限制放宽
+add_executable(cpp14_constexpr cpp14_constexpr/main.cpp)

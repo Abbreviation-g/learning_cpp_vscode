@@ -46,12 +46,12 @@ namespace builtin_chrono_literal {
     void test_chrono_literals() {
         using namespace std::chrono_literals;
 
-        auto duration1 = 10s;   // 10 seconds
-        auto duration2 = 5min;  // 5 minutes
-        auto duration3 = 2h;    // 2 hours
+        auto duration1 = 10s; // 10 seconds
+        auto duration2 = 5min; // 5 minutes
+        auto duration3 = 2h; // 2 hours
         auto duration4 = 500ms; // 500 milliseconds
         auto duration5 = 100us; // 100 microseconds
-        auto duration6 = 50ns;  // 50 nanoseconds
+        auto duration6 = 50ns; // 50 nanoseconds
 
         std::cout << "Duration1: " << duration1.count() << " seconds" << std::endl;
         std::cout << "Duration2: " << duration2.count() << " minutes" << std::endl;
@@ -117,7 +117,7 @@ namespace builtin_complex_literal {
         using namespace std::complex_literals;
         auto comp1 = 1.0 + 2i;
         auto comp2 = 4i;
-        auto comp3 = 3.0f + 4.1if;
+        auto comp3 = 3.0F + 4.1if;
         auto comp4 = 1.0L + 2.0il; // std::complex<long double>(1.0L, 2.0L)
 
         std::cout << typeid(comp1).name() << "\t: " << comp1 << std::endl;
@@ -128,23 +128,25 @@ namespace builtin_complex_literal {
 } // namespace builtin_complex_literal
 
 namespace using_builtin_literal {
+    // NOLINTBEGIN(bugprone-unused-local-non-trivial-variable)
     void test() {
         // 方式1：导入特定字面量
         using std::chrono_literals::operator""s;
-        auto a = 5s;                             // 5秒
+        auto a = 5s; // 5秒
         using std::string_literals::operator""s; // 注意冲突！
-        auto b = "hi"s;                          // "hi"字符串
+        auto b = "hi"s; // "hi"字符串
 
         // 方式2：使用限定名
-        auto s1 = std::chrono_literals::operator""s(5);       // 5秒
+        auto s1 = std::chrono_literals::operator""s(5); // 5秒
         auto s2 = std::string_literals::operator""s("hi", 2); // "hi"字符串
 
         // 方式3：最佳实践（推荐）
         using namespace std::chrono_literals; // 只导入时间
         using namespace std::string_literals; // 只导入字符串
-        auto s3 = 10s;                        // 10秒
-        auto s4 = "hello"s;                   // "hello"字符串
+        auto s3 = 10s; // 10秒
+        auto s4 = "hello"s; // "hello"字符串
     }
+    // NOLINTEND(bugprone-unused-local-non-trivial-variable)
 } // namespace using_builtin_literal
 
 int main() {
