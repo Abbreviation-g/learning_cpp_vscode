@@ -95,3 +95,6 @@ add_executable(cpp14_constexpr cpp14_constexpr/main.cpp)
 
 # c++14 泛型 Lambda 以及捕获变量的增强
 add_executable(cpp14_lambda cpp14_lambda/main.cpp)
+
+# c++14 auto 和 decltype 的改进
+add_executable(cpp14_auto_decltype cpp14_auto_decltype/main.cpp)
