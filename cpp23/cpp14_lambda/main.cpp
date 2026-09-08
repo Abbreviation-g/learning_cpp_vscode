@@ -6,6 +6,8 @@
 #include <mutex>
 #include <ostream>
 #include <string>
+#include <type_traits>
+#include <utility>
 #include <vector>
 #include <list>
 #include <iostream>
@@ -311,7 +313,231 @@ namespace lambda_ns_sort {
         std::cout << "原始字符串: \"" << large_string << "\"" << std::endl; // 输出为空
     }
 
+    void func_vector(std::vector<int> &vec) {
+        std::cout << "void func_vector(std::vector<int>& vec)" << std::endl;
+    }
+    void func_vector(std::vector<int> &&vec) {
+        std::cout << "void func_vector(std::vector<int>&& vec)" << std::endl;
+    }
+    void test_vector() {
+        func_vector(std::vector<int>{ 1, 2, 3, 4 }); // void func_vector(std::vector<int>&& vec)
+        std::vector<int> v{ 1, 2, 3, 4 };
+        func_vector(v); // void func_vector(std::vector<int>& vec)
+        func_vector(std::move(v)); // void func_vector(std::vector<int>&& vec)
+    }
 } // namespace lambda_ns_sort
+
+namespace lambda_capture_forward {
+    class Pointer {
+    private:
+        std::vector<int> data;
+
+    public:
+        // 1. 默认构造函数
+        // std::vector 默认构造为空向量
+        Pointer() : data() {
+            std::cout << "Default Constructor called" << std::endl;
+        }
+
+        // 2. 初始化构造函数
+        // 使用初始化列表直接构造 vector
+        Pointer(int x, int y) : data{ x, y } {
+            std::cout << "Parameterized Constructor called" << std::endl;
+        }
+        // 3. 【新增】接收 vector 的构造函数
+        // 使用 const 引用接收，避免不必要的拷贝，然后在初始化列表中拷贝构造 data
+        // 如果希望直接窃取传入向量的资源（且调用者允许），可以使用右值引用版本（见下文注释）
+        explicit Pointer(const std::vector<int> &vec) : data(vec) {
+            // std::cout << "Vector Constructor (copy) called" << std::endl;
+        }
+
+        // 【可选优化】接收右值 vector 的构造函数
+        // 如果传入的是临时 vector 或 std::move 后的 vector，直接移动资源，效率更高
+        explicit Pointer(std::vector<int> &&vec) : data(std::move(vec)) {
+            // std::cout << "Vector Constructor (move) called" << std::endl;
+        }
+
+        // 3. 拷贝构造函数
+        // 调用 vector 的拷贝构造函数，执行深拷贝
+        Pointer(const Pointer &other) : data(other.data) {
+            std::cout << "Copy Constructor called" << std::endl;
+        }
+
+        // 4. 移动构造函数
+        // 调用 vector 的移动构造函数，窃取底层指针，效率极高
+        // 必须标记 noexcept，以便标准库容器（如 vector）在扩容时使用移动而非拷贝
+        Pointer(Pointer &&other) noexcept : data(std::move(other.data)) {
+            std::cout << "Move Constructor called" << std::endl;
+            // other.data 此时已处于有效但未指定状态（通常为空）
+        }
+
+        // 5. 拷贝赋值运算符
+        Pointer &operator=(const Pointer &other) {
+            std::cout << "Copy Assignment Operator called" << std::endl;
+            if (this != &other) {
+                data = other.data; // 调用 vector 的拷贝赋值
+            }
+            return *this;
+        }
+
+        // 6. 移动赋值运算符
+        Pointer &operator=(Pointer &&other) noexcept {
+            // std::cout << "Move Assignment Operator called" << std::endl;
+            if (this != &other) {
+                data = std::move(other.data); // 调用 vector 的移动赋值
+                // other.data 此时已处于有效但未指定状态
+            }
+            return *this;
+        }
+
+        // 辅助函数：用于打印验证
+        void print() const {
+            std::cout << "Pointer(data: [";
+            for (size_t i = 0; i < data.size(); ++i) {
+                std::cout << data[i];
+                if (i != data.size() - 1)
+                    std::cout << ", ";
+            }
+            std::cout << "])" << std::endl;
+        }
+
+        // Getter
+        int getX() const {
+            return data.empty() ? 0 : data[0];
+        }
+
+        int getY() const {
+            return data.size() < 2 ? 0 : data[1];
+        }
+
+        // 获取底层 vector 引用（可选，用于更灵活的操作）
+        const std::vector<int> &getData() const {
+            return data;
+        }
+    };
+    // 在捕获列表中根据左值和右值进行值的捕获
+    // 定义函数模板 // T&&未定引用类型,需要根据T的类型进行推导,T的类型根据实参进行推导
+    template <typename T>
+    auto create_lambda(T &&value) {
+        // 如果T是左值引用，那么value被转换为左值，那么调用的是capture对象的拷贝构造函数
+        // 如果T不是左值引用，那么value被转换为右值，那么调用的是capture对象的移动构造函数
+        return [capture = std::forward<T>(value)]() mutable {
+            std::cout << "T的类型萃取: ";
+            if (std::is_same_v<T, std::string>) {
+                std::cout << "string";
+            } else if (std::is_same_v<T, std::string &>) {
+                std::cout << "string&";
+            } else if (std::is_same_v<T, std::string &&>) {
+                std::cout << "string&&";
+            } else if (std::is_same_v<T, Pointer>) {
+                std::cout << "Pointer";
+            } else if (std::is_same_v<T, Pointer &>) {
+                std::cout << "Pointer&";
+            } else if (std::is_same_v<T, Pointer &&>) {
+                std::cout << "Pointer&&";
+            }
+            std::cout << std::endl;
+
+            std::cout << "参数value的类型: ";
+            if (std::is_lvalue_reference_v<decltype(value)>) {
+                std::cout << "左值引用";
+            } else if (std::is_rvalue_reference_v<decltype(value)>) {
+                std::cout << "右值引用";
+            }
+            std::cout << std::endl;
+        };
+    }
+    void forward_lambda() {
+        using namespace std::string_literals;
+        std::string str = "hello world";
+        // T->string&, value: string& && -> string&
+        // string&& & , string& -> string& // 左值引用和其它任何引用折叠起来都是左值引用
+        // 左值引用和其它任何引用折叠起来都是左值引用，右值引用和右值引用进行折叠都是右值引用
+        auto lambda1 = create_lambda(str);
+        // T->string, value->string&&
+        auto lambda2 = create_lambda("dabing"s);
+        auto lambda3 = create_lambda(std::move(str));
+
+        lambda1(); // T的类型萃取: string& 参数value的类型: 左值引用
+        lambda2(); // T的类型萃取: string 参数value的类型: 右值引用
+        lambda3(); // T的类型萃取: string 参数value的类型: 右值引用
+    }
+
+    void test_pointer() {
+        std::cout << "lambda1" << std::endl;
+        Pointer p;
+        auto lambda1 = create_lambda(p);
+        lambda1();
+        // Default Constructor called
+        // Copy Constructor called
+        // T的类型萃取: Pointer&
+        // 参数value的类型: 左值引用
+
+        std::cout << "lambda2" << std::endl;
+        auto lambda2 = create_lambda(Pointer());
+        lambda2();
+        // Default Constructor called
+        // Move Constructor called
+        // T的类型萃取: Pointer
+        // 参数value的类型: 右值引用
+
+        std::cout << "lambda3" << std::endl;
+        auto lambda3 = create_lambda(std::move(p));
+        lambda3();
+        // Move Constructor called
+        // T的类型萃取: Pointer
+        // 参数value的类型: 右值引用
+
+        std::cout << "lambda4" << std::endl;
+        auto lambda4 = [](Pointer &value) {
+            std::cout << "T的类型萃取: ";
+            if (std::is_same_v<decltype(value), Pointer>) {
+                std::cout << "Pointer";
+            } else if (std::is_same_v<decltype(value), Pointer &>) {
+                std::cout << "Pointer&";
+            } else if (std::is_same_v<decltype(value), Pointer &&>) {
+                std::cout << "Pointer&&";
+            }
+            std::cout << "; ";
+            std::cout << "参数value的类型: ";
+            if (std::is_lvalue_reference_v<decltype(value)>) {
+                std::cout << "左值引用";
+            } else if (std::is_rvalue_reference_v<decltype(value)>) {
+                std::cout << "右值引用";
+            }
+            std::cout << std::endl;
+        };
+        Pointer p4;
+        lambda4(p4);
+        // Default Constructor called
+        // T的类型萃取: Pointer&; 参数value的类型: 左值引用
+
+        std::cout << "lambda5" << std::endl;
+        Pointer p5;
+        auto lambda5 = [](Pointer &&value) {
+            std::cout << "T的类型萃取: ";
+            if (std::is_same_v<decltype(value), Pointer>) {
+                std::cout << "Pointer";
+            } else if (std::is_same_v<decltype(value), Pointer &>) {
+                std::cout << "Pointer&";
+            } else if (std::is_same_v<decltype(value), Pointer &&>) {
+                std::cout << "Pointer&&";
+            }
+            std::cout << "; ";
+            std::cout << "参数value的类型: ";
+            if (std::is_lvalue_reference_v<decltype(value)>) {
+                std::cout << "左值引用";
+            } else if (std::is_rvalue_reference_v<decltype(value)>) {
+                std::cout << "右值引用";
+            }
+            std::cout << std::endl;
+        };
+        lambda5(std::forward<Pointer>(p5));
+        // Default Constructor called
+        // T的类型萃取: Pointer&&; 参数value的类型: 右值引用
+        lambda5(std::move(p5));//T的类型萃取: Pointer&&; 参数value的类型: 右值引用
+    }
+} // namespace lambda_capture_forward
 
 int main() {
     lambda_ns::test_lambda_11();
@@ -323,5 +549,11 @@ int main() {
     lambda_ns_sort::test_lambda_value_catch();
     lambda_ns_sort::test_lambda_reference_catch();
     lambda_ns_sort::test_lambda_move_catch();
+    lambda_ns_sort::test_vector();
+
+    std::cout << "----------" << std::endl;
+    lambda_capture_forward::forward_lambda();
+    std::cout << "----------" << std::endl;
+    lambda_capture_forward::test_pointer();
     return 0;
 }
