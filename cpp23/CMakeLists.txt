@@ -101,3 +101,6 @@ add_executable(cpp14_auto_decltype cpp14_auto_decltype/main.cpp)
 
 # c++14 C++14 中聚合类成员初始化
 add_executable(cpp14_aggregate_class cpp14_aggregate_class/main.cpp)
+
+# c++14 C++14 变量模板
+add_executable(cpp14_variable_templates cpp14_variable_templates/main.cpp)
