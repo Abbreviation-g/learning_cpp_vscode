@@ -107,3 +107,6 @@ add_executable(cpp14_variable_templates cpp14_variable_templates/main.cpp)
 
 # c++14 透明操作符函数对象
 add_executable(cpp14_transparent_comparator cpp14_transparent_comparator/main.cpp)
+
+# c++14 unique_ptr 在 C++14 中的优化
+add_executable(cpp14_unique_ptr cpp14_unique_ptr/main.cpp)
