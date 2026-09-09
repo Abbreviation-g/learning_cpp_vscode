@@ -110,3 +110,7 @@ add_executable(cpp14_transparent_comparator cpp14_transparent_comparator/main.cp
 
 # c++14 unique_ptr 在 C++14 中的优化
 add_executable(cpp14_unique_ptr cpp14_unique_ptr/main.cpp)
+
+# c++14 多线程之读写锁
+add_executable(cpp14_shared_lock cpp14_shared_lock/main.cpp)
+target_link_libraries(cpp14_shared_lock Threads::Threads)
