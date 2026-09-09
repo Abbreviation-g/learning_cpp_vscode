@@ -104,3 +104,6 @@ add_executable(cpp14_aggregate_class cpp14_aggregate_class/main.cpp)
 
 # c++14 C++14 变量模板
 add_executable(cpp14_variable_templates cpp14_variable_templates/main.cpp)
+
+# c++14 透明操作符函数对象
+add_executable(cpp14_transparent_comparator cpp14_transparent_comparator/main.cpp)
