@@ -117,3 +117,6 @@ target_link_libraries(cpp14_shared_lock Threads::Threads)
 
 # c++11 原始字面量
 add_executable(cpp11_r_string cpp11_r_string/main.cpp)
+
+# c++11 指针空值类型 - nullptr
+add_executable(cpp11_nullptr cpp11_nullptr/main.cpp)
