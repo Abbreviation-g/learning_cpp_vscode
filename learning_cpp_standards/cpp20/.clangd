@@ -1,0 +1,17 @@
+CompileFlags:
+  CompilationDatabase: build/mingw/compile_commands.json
+  # clangd 不能正确理解 -std=c++23 从 compile_commands.json 传来的参数，但可以通过 .clangd 拦截并替换成 -std=gnu++2b。
+  # Remove:
+  #   - "-std=c++23"
+  Add:
+    - "-std=c++23"
+    - "--target=x86_64-w64-mingw32"
+    # - "--gcc-toolchain=C:/msys64/ucrt64"
+  # Add:
+  #   - "-IC:/install/my_sort_static_lib/include"
+  # Compiler: C:/msys64/ucrt64/bin/g++.exe
+
+Index:
+  # 启用后台索引，以便提供跨文件跳转和补全。
+  Background: Build
+

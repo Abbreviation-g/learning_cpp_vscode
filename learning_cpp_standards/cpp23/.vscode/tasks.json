@@ -1,0 +1,95 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "CMake: configure (mingw)",
+            "type": "process",
+            "command": "cmake",
+            "args": [
+                "--preset",
+                "mingw"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "CMake: build (mingw build)",
+            "type": "process",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "--preset",
+                "mingwbuild"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": [
+                "CMake: configure (mingw)",
+                "GCC: build std module (mingw)"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "CMake: clean (mingw build)",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "--preset",
+                "mingwbuild",
+                "--target",
+                "clean"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "shell": {
+                    "executable": "C:\\sw\\PowerShell-7.4.17\\pwsh.exe",
+                    "args": [
+                        "-NoLogo",
+                        "-NoProfile"
+                    ]
+                }
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "GCC: build std module (mingw)",
+            "type": "process",
+            "command": "C:/msys64/ucrt64/bin/g++.exe",
+            "args": [
+                "-std=c++23",
+                "-fmodules-ts",
+                "-fsearch-include-path",
+                "-c",
+                "bits/std.cc"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/build/mingw"
+            },
+            "problemMatcher": []
+        },        {
+            "label": "clang-tidy: check sources (C++23)",
+            "type": "process",
+            "command": "C:\\sw\\clang+llvm-22.1.0-x86_64-pc-windows-msvc\\bin\\clang-tidy.exe",
+            "args": [
+                "-p",
+                "build/mingw",
+                "${workspaceFolder}/src/main.cpp",
+                "${workspaceFolder}/cpp23_import/main.cpp",
+                "--",
+                "-std=c++23",
+                "--target=x86_64-w64-mingw32",
+                "--gcc-toolchain=C:/msys64/ucrt64"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        }
+    ]
+}

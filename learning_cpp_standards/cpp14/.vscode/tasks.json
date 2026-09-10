@@ -1,0 +1,87 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "CMake: configure (mingw)",
+            "type": "process",
+            "command": "cmake",
+            "args": [
+                "--preset",
+                "mingw"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "CMake: build (mingw build)",
+            "type": "process",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "--preset",
+                "mingwbuild"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": [
+                "CMake: configure (mingw)"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "CMake: clean (mingw build)",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "--preset",
+                "mingwbuild",
+                "--target",
+                "clean"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "shell": {
+                    "executable": "C:\\sw\\PowerShell-7.4.17\\pwsh.exe",
+                    "args": [
+                        "-NoLogo",
+                        "-NoProfile"
+                    ]
+                }
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "clang-tidy: check sources (C++14)",
+            "type": "process",
+            "command": "C:\\sw\\clang+llvm-22.1.0-x86_64-pc-windows-msvc\\bin\\clang-tidy.exe",
+            "args": [
+                "-p",
+                "build/mingw",
+                "${workspaceFolder}/cpp14_aggregate_class/main.cpp",
+                "${workspaceFolder}/cpp14_auto_decltype/main.cpp",
+                "${workspaceFolder}/cpp14_binary_literal/main.cpp",
+                "${workspaceFolder}/cpp14_constexpr/main.cpp",
+                "${workspaceFolder}/cpp14_custom_literal/main.cpp",
+                "${workspaceFolder}/cpp14_lambda/main.cpp",
+                "${workspaceFolder}/cpp14_shared_lock/main.cpp",
+                "${workspaceFolder}/cpp14_transparent_comparator/main.cpp",
+                "${workspaceFolder}/cpp14_unique_ptr/main.cpp",
+                "${workspaceFolder}/cpp14_variable_templates/main.cpp",
+                "--",
+                "-std=c++14",
+                "--target=x86_64-w64-mingw32",
+                "--gcc-toolchain=C:/msys64/ucrt64"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        }
+    ]
+}

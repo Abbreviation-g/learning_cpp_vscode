@@ -1,0 +1,82 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "CMake: configure (mingw)",
+            "type": "process",
+            "command": "cmake",
+            "args": [
+                "--preset",
+                "mingw"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "CMake: build (mingw build)",
+            "type": "process",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "--preset",
+                "mingwbuild"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": [
+                "CMake: configure (mingw)"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ]
+        },
+        {
+            "label": "CMake: clean (mingw build)",
+            "type": "shell",
+            "command": "cmake",
+            "args": [
+                "--build",
+                "--preset",
+                "mingwbuild",
+                "--target",
+                "clean"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "shell": {
+                    "executable": "C:\\sw\\PowerShell-7.4.17\\pwsh.exe",
+                    "args": [
+                        "-NoLogo",
+                        "-NoProfile"
+                    ]
+                }
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "clang-tidy: check sources (C++17)",
+            "type": "process",
+            "command": "C:\\sw\\clang+llvm-22.1.0-x86_64-pc-windows-msvc\\bin\\clang-tidy.exe",
+            "args": [
+                "-p",
+                "build/mingw",
+                "${workspaceFolder}/cpp17_lambda/main.cpp",
+                "${workspaceFolder}/cpp17_if_switch/main.cpp",
+                "${workspaceFolder}/cpp17_structured_binding/main.cpp",
+                "${workspaceFolder}/cpp17_byte/main.cpp",
+                "${workspaceFolder}/cpp17_charconv/main.cpp",
+                "--",
+                "-std=c++17",
+                "--target=x86_64-w64-mingw32",
+                "--gcc-toolchain=C:/msys64/ucrt64"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        }
+    ]
+}

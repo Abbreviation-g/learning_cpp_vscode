@@ -1,0 +1,46 @@
+{
+    "version": 6,
+    "configurePresets": [
+        {
+            "name": "mingw",
+            "displayName": "GCC (MinGW Makefiles) - C++20",
+            "description": "Using compilers: gcc, g++ (C++20)",
+            "generator": "MinGW Makefiles",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "gcc",
+                "CMAKE_CXX_COMPILER": "g++",
+                "CMAKE_MAKE_PROGRAM": "mingw32-make",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            }
+        },
+        {
+            "name": "ninja-clang",
+            "displayName": "Ninja with clang++ - C++20",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_CXX_COMPILER": "C:/sw/clang+llvm-22.1.0-x86_64-pc-windows-msvc/bin/clang++.exe",
+                "CMAKE_C_COMPILER": "C:/sw/clang+llvm-22.1.0-x86_64-pc-windows-msvc/bin/clang.exe",
+                "CMAKE_MAKE_PROGRAM": "C:/msys64/ucrt64/bin/ninja.exe",
+                "CMAKE_BUILD_TYPE": "Debug",
+                "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "mingwbuild",
+            "displayName": "Build with MinGW (C++20)",
+            "description": "Build the project using the mingw configure preset.",
+            "configurePreset": "mingw"
+        },
+        {
+            "name": "clangbuild",
+            "displayName": "Build with Ninja/Clang (C++20)",
+            "description": "Build the project using the ninja-clang configure preset.",
+            "configurePreset": "ninja-clang"
+        }
+    ]
+}

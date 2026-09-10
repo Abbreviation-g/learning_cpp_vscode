@@ -1,0 +1,48 @@
+{
+    "folders": [
+        {
+            "name": "cpp11",
+            "path": "cpp11"
+        },
+        {
+            "name": "cpp14",
+            "path": "cpp14"
+        },
+        {
+            "name": "cpp17",
+            "path": "cpp17"
+        },
+        {
+            "name": "cpp20",
+            "path": "cpp20"
+        },
+        {
+            "name": "cpp23",
+            "path": "cpp23"
+        }
+    ],
+    "settings": {
+        // 这个多根工作区里每个 folder 都是一个完整的独立 CMake 工程,
+        // 各自带有 CMakeLists.txt / CMakePresets.json / .clangd /
+        // .clang-format / .clang-tidy / .vscode/。
+        // 请在每个 folder 上单独执行 "CMake: Select Configure Preset" 和
+        // "CMake: Configure"。
+        "cmake.useCMakePresets": "always",
+        "C_Cpp.intelliSenseEngine": "disabled",
+        "clangd.path": "C:\\sw\\clang+llvm-22.1.0-x86_64-pc-windows-msvc\\bin\\clangd.exe",
+        "clang-format.executable": "C:/sw/clang+llvm-22.1.0-x86_64-pc-windows-msvc/bin/clang-format.exe",
+        "terminal.integrated.defaultProfile.windows": "PowerShell 7",
+        "terminal.integrated.profiles.windows": {
+            "PowerShell 7": {
+                "path": "C:\\sw\\PowerShell-7.4.17\\pwsh.exe",
+                "args": [
+                    "-NoExit",
+                    "-Command",
+                    "chcp 65001 | Out-Null;",
+                    "[Console]::OutputEncoding = [System.Text.Encoding]::UTF8;",
+                    "[Console]::InputEncoding = [System.Text.Encoding]::UTF8"
+                ]
+            }
+        }
+    }
+}
