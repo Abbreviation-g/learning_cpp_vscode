@@ -57,12 +57,12 @@ namespace shared_timed_mutex_ns {
             if (locker.try_lock_for(std::chrono::milliseconds(duration_ms))) {
                 std::stringstream ss;
                 ss << std::format("[try_read_for: {} 线程] 正在读数据", std::this_thread::get_id()) << std::endl;
-                std::cout <<ss.str();
+                std::cout << ss.str();
                 return m_data;
             } else {
                 std::stringstream ss;
                 ss << std::format("[try_read_for: {} 线程] 读取失败，等待超时", std::this_thread::get_id()) << std::endl;
-                std::cout <<ss.str();
+                std::cout << ss.str();
                 return std::string{};
             }
         }

@@ -82,7 +82,9 @@ namespace basic_syntax {
 namespace combined_syntax {
     struct MyColor {
         uint8_t r, g, b;
-        void print() const { std::cout << "Color: (" << static_cast<int>(r) << ", " << static_cast<int>(g) << ", " << static_cast<int>(b) << ")" << std::endl; }
+        void print() const {
+            std::cout << "Color: (" << static_cast<int>(r) << ", " << static_cast<int>(g) << ", " << static_cast<int>(b) << ")" << std::endl;
+        }
     };
     MyColor operator""_rgb(const char *str, size_t len) {
         // "255, 100, 100"

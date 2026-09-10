@@ -9,7 +9,8 @@ using namespace std::chrono_literals;
 
 // 与std::thread不同，std::jthread在逻辑上持有一个std::stop_source类型的内部私有成员，该成员维护一个共享的停止状态(stop-state)。std::jthread构造函数接受一个以std::stop_token作为第一个参数的函数，该参数由std::jthread从其内部std::stop_source传入。这使得该构造函数能够检查在执行过程中是否已请求停止，如果已请求则返回。
 
-// std::jthread对象也可能处于不代表任何线程的状态(after default construction, move from, detach, or join)，并且执行线程可能不与任何std::jthread 对象关联(after detach)。
+// std::jthread对象也可能处于不代表任何线程的状态(after default construction, move from, detach, or join)，并且执行线程可能不与任何std::jthread 对象关联(after
+// detach)。
 
 // 任何两个std::jthread对象都不能代表同一个执行线程；std::jthread不可拷贝构造或拷贝赋值，但可移动构造和移动赋值。
 
@@ -39,57 +40,56 @@ using namespace std::chrono_literals;
 
 // swap ：交换两个std::jthread对象的底层句柄。
 
-int test_jthread_constructor()
-{
+int test_jthread_constructor() {
     auto func1 = [](int val) {
         for (auto i = 0; i < 2; ++i) {
             std::cout << ++val << std::endl;
             std::this_thread::sleep_for(100ms);
         }
     };
- 
-    auto func2 = [](int& val) {
+
+    auto func2 = [](int &val) {
         val = 88;
     };
- 
+
     std::jthread jth1(func1, 5);
     std::jthread jth2{};
     std::cout << std::format("jth1 joinable: {}; jth2 joinable: {}", jth1.joinable(), jth2.joinable()) << std::endl;
     std::cout << "jth1 id: " << jth1.get_id() << "; jth2  id: " << jth2.get_id() << std::endl;
- 
+
     jth2 = std::move(jth1);
     std::cout << std::format("jth1 joinable: {}; jth2 joinable: {}", jth1.joinable(), jth2.joinable()) << std::endl;
     std::cout << "jth1 id: " << jth1.get_id() << "; jth2  id: " << jth2.get_id() << std::endl;
- 
+
     int val{ -1 };
     std::jthread jth3(func2, std::ref(val));
     jth3.join();
     std::cout << std::format("jth3 joinable: {}, val: {}", jth3.joinable(), val) << std::endl;
     std::cout << "jth3 id: " << jth3.get_id() << std::endl;
- 
+
     std::cout << "concurrent threads are supported: " << std::jthread::hardware_concurrency() << std::endl;
- 
+
     std::jthread jth4([] {
         std::cout << "jth4 running ..." << std::endl;
         std::this_thread::sleep_for(1s);
         std::cout << "jth4 end" << std::endl;
     });
     std::cout << "jth4 joinable: " << jth4.joinable() << ", id: " << jth4.get_id() << std::endl;
- 
+
     jth4.detach();
     std::this_thread::sleep_for(3s);
     std::cout << "jth4 joinable: " << jth4.joinable() << ", id: " << jth4.get_id() << std::endl;
- 
+
     jth4.swap(jth2);
     std::cout << std::format("jth2 joinable: {}; jth4 joinable: {}", jth2.joinable(), jth4.joinable()) << std::endl;
- 
+
     std::swap(jth2, jth4);
     std::cout << std::format("jth2 joinable: {}; jth4 joinable: {}", jth2.joinable(), jth4.joinable()) << std::endl;
- 
+
     return 0;
 }
 
-int main(){
+int main() {
     test_jthread_constructor();
     return 0;
 }

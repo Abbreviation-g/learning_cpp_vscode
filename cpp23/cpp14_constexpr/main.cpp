@@ -52,7 +52,9 @@ namespace use_constexpr_ns {
                 array[i] = T(); // 默认初始化
             }
         }
-        int getLength() const { return Size; }
+        int getLength() const {
+            return Size;
+        }
 
     private:
         T array[Size];
@@ -200,10 +202,18 @@ namespace constexpr_14_ns {
                 y = 100;
             }
         }
-        constexpr void setX(int v) {x = v;}
-        constexpr void setY(int v) {y = v;}
-        constexpr int getX() {return x;}
-        constexpr int getY() {return y;}
+        constexpr void setX(int v) {
+            x = v;
+        }
+        constexpr void setY(int v) {
+            y = v;
+        }
+        constexpr int getX() {
+            return x;
+        }
+        constexpr int getY() {
+            return y;
+        }
 
     private:
         int x;
@@ -214,9 +224,9 @@ namespace constexpr_14_ns {
         p.setY(y);
         return p;
     }
-    void test_point(){
-        constexpr Point p(100,200);
-        Point p2(14,5);
+    void test_point() {
+        constexpr Point p(100, 200);
+        Point p2(14, 5);
         constexpr Point p3 = p;
         // constexpr Point p3 = p2;//错误
         constexpr Point p4 = movePoint(p, 1, 2);
@@ -224,16 +234,15 @@ namespace constexpr_14_ns {
 
     // 2.2 constexpr 成员函数不再隐式为 const
 
-//     根据上文对讲解，我们可以对 constexpr 在 C++11 与 C++14 中的特性做如下总结：
+    //     根据上文对讲解，我们可以对 constexpr 在 C++11 与 C++14 中的特性做如下总结：
 
-// 特性	C++11	C++14
-// 构造函数体	必须为空	可以有任意语句
-// 局部变量	❌ 不允许	✅ 允许
-// 控制流语句	❌ 不允许	✅ 允许
-// 函数调用	❌ 不允许	✅ 允许（调用 constexpr 函数）
-// 循环	❌ 不允许	✅ 允许
-// 修改类成员	只能在初始化列表	只能在初始化列表
-
+    // 特性	C++11	C++14
+    // 构造函数体	必须为空	可以有任意语句
+    // 局部变量	❌ 不允许	✅ 允许
+    // 控制流语句	❌ 不允许	✅ 允许
+    // 函数调用	❌ 不允许	✅ 允许（调用 constexpr 函数）
+    // 循环	❌ 不允许	✅ 允许
+    // 修改类成员	只能在初始化列表	只能在初始化列表
 
 } // namespace constexpr_14_ns
 

@@ -19,9 +19,9 @@ namespace basic_syntax {
         //     2. 其它字面量修饰符
         // 2.1 有符号/无符号
         // 在C++14 中二进制字面量还可以配合有符号/无符号修饰符使用：
-        auto x = 0b1010u;                           // 无符号整数
-        auto y = 0b1101ul;                          // 无符号长整数
-        auto z = 0b1101ull;                         // 无符号长整数
+        auto x = 0b1010u; // 无符号整数
+        auto y = 0b1101ul; // 无符号长整数
+        auto z = 0b1101ull; // 无符号长整数
         std::cout << typeid(x).name() << std::endl; // 输出类型信息
         std::cout << typeid(y).name() << std::endl; // 输出类型信息
         std::cout << typeid(z).name() << std::endl; // 输出类型信息
@@ -38,11 +38,11 @@ namespace basic_syntax {
         std::cout << "Binary with separator: " << mask1 << std::endl;
         // 数值分割符除了在二进制数据中使用，也可以在其它进制的数值中使用，比如：
         long long bigNumber = 1'000'000'000; // 长整形, 10进制
-        double pi = 3.14159'26535'89793;     // 浮点型, 10进制
-        int hex = 0xFF'FF'FF'FF;             // 16进制
-        int binary = 0b1000'0001'1000'0000;  // 2进制
-        int octal1 = 012'345;                // 八进制 12345 = 十进制 5349
-        int octal2 = 07'77'777;              // 八进制 777777 = 十进制 262143
+        double pi = 3.14159'26535'89793; // 浮点型, 10进制
+        int hex = 0xFF'FF'FF'FF; // 16进制
+        int binary = 0b1000'0001'1000'0000; // 2进制
+        int octal1 = 012'345; // 八进制 12345 = 十进制 5349
+        int octal2 = 07'77'777; // 八进制 777777 = 十进制 262143
     }
 } // namespace basic_syntax
 
@@ -50,7 +50,7 @@ namespace usage_bit_flag {
     enum FilePermissions { READ = 0b001, WRITE = 0b010, EXECUTE = 0b100 };
     auto test() -> auto {
         // 设置权限
-        int user_perms = 0b111;  // 读、写、执行
+        int user_perms = 0b111; // 读、写、执行
         int group_perms = 0b101; // 读、执行
         int other_perms = 0b001; // 只读
 
@@ -72,11 +72,21 @@ namespace usage_color {
             argb = (static_cast<unsigned int>(a) << 24) | (static_cast<unsigned int>(r) << 16) | (static_cast<unsigned int>(g) << 8) |
                    static_cast<unsigned int>(b);
         }
-        unsigned char getAlpha() const { return static_cast<unsigned char>(argb >> 24); }
-        unsigned char getRed() const { return static_cast<unsigned char>((argb & RED_MASK) >> 16); }
-        unsigned char getGreen() const { return static_cast<unsigned char>((argb & GREEN_MASK) >> 8); }
-        unsigned char getBlue() const { return static_cast<unsigned char>(argb & BLUE_MASK); }
-        void print() const { std::cout << "ARGB: 0X" << std::hex << std::setfill('0') << std::setw(8) << argb << std::dec << std::endl; }
+        unsigned char getAlpha() const {
+            return static_cast<unsigned char>(argb >> 24);
+        }
+        unsigned char getRed() const {
+            return static_cast<unsigned char>((argb & RED_MASK) >> 16);
+        }
+        unsigned char getGreen() const {
+            return static_cast<unsigned char>((argb & GREEN_MASK) >> 8);
+        }
+        unsigned char getBlue() const {
+            return static_cast<unsigned char>(argb & BLUE_MASK);
+        }
+        void print() const {
+            std::cout << "ARGB: 0X" << std::hex << std::setfill('0') << std::setw(8) << argb << std::dec << std::endl;
+        }
     };
 
     void test() {

@@ -10,25 +10,25 @@
 
 namespace {
 
-void log(
-    const std::source_location location = std::source_location::current()) {
-  std::clog << "file: " << location.file_name() << "(" << location.line() << ":"
-            << location.column()
-            << "); function name: " << location.function_name() << std::endl;
-}
+    void log(const std::source_location location = std::source_location::current()) {
+        std::clog << "file: " << location.file_name() << "(" << location.line() << ":" << location.column() << "); function name: " << location.function_name()
+                  << std::endl;
+    }
 
-void func() { log(); }
+    void func() {
+        log();
+    }
 
 } // namespace
 
 int test_source_location() {
-  log();
-  func();
+    log();
+    func();
 
-  return 0;
+    return 0;
 }
 
 int main() {
-  test_source_location();
-  return 0;
+    test_source_location();
+    return 0;
 }

@@ -535,7 +535,7 @@ namespace lambda_capture_forward {
         lambda5(std::forward<Pointer>(p5));
         // Default Constructor called
         // T的类型萃取: Pointer&&; 参数value的类型: 右值引用
-        lambda5(std::move(p5));//T的类型萃取: Pointer&&; 参数value的类型: 右值引用
+        lambda5(std::move(p5)); // T的类型萃取: Pointer&&; 参数value的类型: 右值引用
     }
 } // namespace lambda_capture_forward
 
