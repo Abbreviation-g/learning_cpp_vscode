@@ -41,3 +41,6 @@ add_executable(cpp11_r_string cpp11_r_string/main.cpp)
 
 # c++11 auto decltype 自动类型推导
 add_executable(cpp11_auto_decltype cpp11_auto_decltype/main.cpp)
+
+# c++11 final和override
+add_executable(cpp11_final_override cpp11_final_override/main.cpp)
