@@ -120,3 +120,6 @@ add_executable(cpp11_r_string cpp11_r_string/main.cpp)
 
 # c++11 指针空值类型 - nullptr
 add_executable(cpp11_nullptr cpp11_nullptr/main.cpp)
+
+# c++11 constexpr
+add_executable(cpp11_constexpr cpp11_constexpr/main.cpp)
