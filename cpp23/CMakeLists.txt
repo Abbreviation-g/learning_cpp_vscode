@@ -114,3 +114,6 @@ add_executable(cpp14_unique_ptr cpp14_unique_ptr/main.cpp)
 # c++14 多线程之读写锁
 add_executable(cpp14_shared_lock cpp14_shared_lock/main.cpp)
 target_link_libraries(cpp14_shared_lock Threads::Threads)
+
+# c++11 原始字面量
+add_executable(cpp11_r_string cpp11_r_string/main.cpp)
