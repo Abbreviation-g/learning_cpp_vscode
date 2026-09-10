@@ -38,3 +38,6 @@ add_executable(cpp11_nullptr cpp11_nullptr/main.cpp)
 
 # c++11 原始字面量
 add_executable(cpp11_r_string cpp11_r_string/main.cpp)
+
+# c++11 auto decltype 自动类型推导
+add_executable(cpp11_auto_decltype cpp11_auto_decltype/main.cpp)
