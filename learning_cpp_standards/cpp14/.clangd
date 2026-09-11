@@ -4,8 +4,8 @@ CompileFlags:
   # Remove:
   #   - "-std=c++23"
   Add:
-    - "-std=c++23"
-    - "--target=x86_64-w64-mingw32"
+    - "-std=c++14"
+    - "--target=x86_64-w64-mingw32" #g++ -dumpmachine
     # - "--gcc-toolchain=C:/msys64/ucrt64"
   # Add:
   #   - "-IC:/install/my_sort_static_lib/include"

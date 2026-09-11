@@ -4,7 +4,7 @@ CompileFlags:
   # Remove:
   #   - "-std=c++23"
   Add:
-    - "-std=c++23"
+    - "-std=c++17"
     - "--target=x86_64-w64-mingw32"
     # - "--gcc-toolchain=C:/msys64/ucrt64"
   # Add:
