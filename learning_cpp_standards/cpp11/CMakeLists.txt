@@ -47,3 +47,6 @@ add_executable(cpp11_final_override cpp11_final_override/main.cpp)
 
 # c++11 模板的优化
 add_executable(cpp11_template cpp11_template/main.cpp)
+
+# c++11 using的使用
+add_executable(cpp11_using cpp11_using/main.cpp)
