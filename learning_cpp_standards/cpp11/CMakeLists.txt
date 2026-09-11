@@ -53,3 +53,6 @@ add_executable(cpp11_using cpp11_using/main.cpp)
 
 # c++11 委托构造和继承构造函数
 add_executable(cpp11_constructor cpp11_constructor/main.cpp)
+
+# c++11 列表初始化
+add_executable(cpp11_list_init cpp11_list_init/main.cpp)
