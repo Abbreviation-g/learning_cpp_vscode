@@ -50,3 +50,6 @@ add_executable(cpp11_template cpp11_template/main.cpp)
 
 # c++11 using的使用
 add_executable(cpp11_using cpp11_using/main.cpp)
+
+# c++11 委托构造和继承构造函数
+add_executable(cpp11_constructor cpp11_constructor/main.cpp)
