@@ -56,3 +56,6 @@ add_executable(cpp11_constructor cpp11_constructor/main.cpp)
 
 # c++11 列表初始化
 add_executable(cpp11_list_init cpp11_list_init/main.cpp)
+
+# c++11 基于范围的for循环
+add_executable(cpp11_for_range cpp11_for_range/main.cpp)
