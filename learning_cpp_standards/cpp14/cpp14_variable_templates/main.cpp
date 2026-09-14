@@ -2,7 +2,10 @@
 #include <ios>
 #include <iostream>
 #include <limits>
+#include <string>
+#include <type_traits>
 #include <vector>
+#include <map>
 // https://subingwen.cn/cpp/variable-templates/
 // 变量模板，函数模板，类模板
 // template<typename T, int value>
@@ -263,6 +266,232 @@ namespace variable_template_priority_ns {
     }
 } // namespace variable_template_priority_ns
 
+namespace method_template_ns {
+    // 主模板
+    template <typename T>
+    void print(const T &t) {
+        std::cout << "通用模板: " << t << std::endl;
+    }
+    // 全特化
+    template <>
+    void print(const int &t) {
+        std::cout << "全特化int模板: " << t << std::endl;
+    }
+    template <>
+    void print(const std::string &t) {
+        std::cout << "全特化std::string模板: " << t << std::endl;
+    }
+    // 偏特化
+    template <typename T>
+    void print(const T *t) {
+        std::cout << "偏特化const T*& t模板: " << *t << std::endl;
+    }
+    template <typename T>
+    void print(const std::vector<T> &value) {
+        std::cout << "偏特化 vector: [";
+        for (const auto &elem : value) {
+            std::cout << elem << " ";
+        }
+        std::cout << "]" << std::endl;
+    }
+
+    template <typename T>
+    void print(const std::vector<const T *> &value) {
+        std::cout << "偏特化 const std::vector<const T *> &value: [";
+        for (const auto &elem : value) {
+            std::cout << elem << " ";
+        }
+        std::cout << "]" << std::endl;
+    }
+
+    // 偏特化: std::map
+    // 说明: 函数模板本身不支持"偏特化"(partial specialization),
+    //       只能通过"函数模板重载"来实现类似效果。
+    //       因此这里为 std::map<K, V> 提供一个重载版本。
+    template <typename K, typename V>
+    void print(const std::map<K, V> &value) {
+        std::cout << "偏特化 map: {";
+        for (const auto &kv : value) {
+            std::cout << kv.first << ": " << kv.second << ", ";
+        }
+        std::cout << "}" << std::endl;
+    }
+
+    void test() {
+        // 通用模板
+        print(3.14); // 通用模板: 3.14
+        print("hello"); // 通用模板: hello（const char*）
+
+        // 全特化
+        print(42); // 全特化 int: 84
+        print(std::string("world")); // 全特化 string: world (长度:5)
+
+        // 偏特化
+        int x = 100;
+        const int *p = &x;
+        print(p); // 偏特化 指针: 100
+        print("ccc"); // 偏特化const T*& t模板: c
+
+        std::vector<int> v = { 1, 2, 3 };
+        print(v); // 偏特化 vector: [1 2 3 ]
+        print(std::vector<std::string>{ "x", "y" }); // 偏特化 vector: [x y ]
+        print(std::vector<const char *>{ "x", "y" }); // 偏特化 const std::vector<const T *> &value: [x y ]
+
+        // map 版本（函数模板重载，而非偏特化）
+        std::map<int, char> m = { { 1, '1' }, { 2, '2' } };
+        print(m); // 偏特化 map: {1: 1, 2: 2, }
+
+        std::map<std::string, int> m2 = { { "aa", 1 }, { "bb", 2 } };
+        print(m2); // 偏特化 map: {aa: 1, bb: 2, }
+    }
+} // namespace method_template_ns
+
+namespace class_template_ns {
+    // ========== 基础模板 ==========
+    template <typename T>
+    class Container {
+    public:
+        Container(const T &value) : data(value) {
+        }
+        void print() const {
+            std::cout << "通用模板: " << data << std::endl;
+        }
+
+    private:
+        T data;
+    };
+    // 全特化int
+    template <>
+    class Container<int> {
+    public:
+        Container(int value) : data(value) {
+        }
+        void print() const {
+            std::cout << "全特化int模板: " << data << std::endl;
+        }
+
+    private:
+        int data;
+    };
+    // 全特化std::string
+    template <>
+    class Container<std::string> {
+    public:
+        Container(const std::string &&value) : data(value) {
+        }
+        void print() const {
+            std::cout << "全特化std::string模板: " << data << ", " << data.length() << std::endl;
+        }
+
+    private:
+        std::string data;
+    };
+
+    // 偏特化：针对所有指针类型
+    template <typename T>
+    class Container<T *> {
+    public:
+        Container(T *value) : data(value) {
+        }
+        void print() const {
+            std::cout << "偏特化 指针: " << *data << std::endl;
+        }
+
+    private:
+        T *data;
+    };
+    // 偏特化：针对所有 std::vector<T> 类型
+    template <typename T>
+    class Container<std::vector<T>> {
+    public:
+        Container(const std::vector<T> &value) : data(value) {
+        }
+        void print() const {
+            std::cout << "偏特化 vector: [";
+            for (const auto &elem : data) {
+                std::cout << elem << " ";
+            }
+            std::cout << "]" << std::endl;
+        }
+
+    private:
+        std::vector<T> data;
+    };
+    template <typename K, typename V>
+    class Container<std::map<K, V>> {
+    public:
+        Container(const std::map<K, V> &value) : data(value) {
+        }
+        void print() const {
+            std::cout << "模板函数重载 map: [";
+            for (const auto &kv : data) {
+                std::cout << "[" << kv.first << "," << kv.second << "], ";
+            }
+            std::cout << "]" << std::endl;
+        }
+
+    private:
+        std::map<K, V> data;
+    };
+
+    void test() {
+        // 通用模板
+        Container<double> c1(3.14);
+        c1.print(); // 通用模板: 3.14
+
+        // 全特化 int
+        Container<int> c2(42);
+        c2.print(); // 全特化 int: 84
+
+        // 全特化 string
+        Container<std::string> c3("hello");
+        c3.print(); // 全特化 string: hello (长度:5)
+
+        // 偏特化 指针
+        int x = 100;
+        Container<int *> c4(&x);
+        c4.print(); // 偏特化 指针: 100
+
+        // 偏特化 vector
+        std::vector<int> v = { 1, 2, 3 };
+        Container<std::vector<int>> c5(v);
+        c5.print(); // 偏特化 vector: [1 2 3 ]
+
+        std::map<const char *, std::string> m = { { "111", "111" }, { "222", "222" } };
+        Container<decltype(m)>{ m }.print();
+    }
+
+    class Base {};
+    class Derived : public Base {};
+
+    bool check_type(const Base &obj) {
+        return dynamic_cast<const Base *>(&obj) != nullptr;
+    }
+    template <typename T>
+    bool check_type2(const T &obj) {
+        return dynamic_cast<const Base *>(&obj) != nullptr;
+    }
+    template <typename T>
+    bool check_type3(const T &) {
+        return std::is_base_of<Base, T>();
+    }
+    void call_check_type() {
+        Base b;
+        Derived d;
+        std::cout << check_type(b) << std::endl; // 1
+        std::cout << check_type(d) << std::endl; // 1
+
+        std::string i{ "xxx" };
+        // std::cout << check_type2(i) << std::endl;
+        std::cout << check_type2(b) << std::endl; // 1
+        std::cout << check_type2(d) << std::endl; // 1
+
+        std::cout << check_type3(i) << std::endl; // 0
+        std::cout << check_type3(b) << std::endl; // 1
+        std::cout << check_type3(d) << std::endl; // 1
+    }
+} // namespace class_template_ns
+
 int main() {
     variable_template_ns::variable_template();
     variable_template_ns::test_max_value();
@@ -271,4 +500,7 @@ int main() {
     variable_template_specialization_ns::test_is_array();
     variable_template_specialization_ns::test_is_same_type();
     variable_template_priority_ns::test_priority();
+    method_template_ns::test();
+    class_template_ns::test();
+    class_template_ns::call_check_type();
 }
