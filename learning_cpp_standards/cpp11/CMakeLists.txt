@@ -62,3 +62,6 @@ add_executable(cpp11_for_range cpp11_for_range/main.cpp)
 
 # c++11 可调用对象包装器、绑定器
 add_executable(cpp11_bind cpp11_bind/main.cpp)
+
+# c++11 Lambda表达式
+add_executable(cpp11_lambda cpp11_lambda/main.cpp)
