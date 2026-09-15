@@ -65,3 +65,6 @@ add_executable(cpp11_bind cpp11_bind/main.cpp)
 
 # c++11 Lambda表达式
 add_executable(cpp11_lambda cpp11_lambda/main.cpp)
+
+# c++11 右值引用
+add_executable(cpp11_rvalue_reference cpp11_rvalue_reference/main.cpp)
