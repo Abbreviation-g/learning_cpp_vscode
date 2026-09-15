@@ -125,6 +125,9 @@ namespace rvalue_reference_ns {
         // 如果没有移动构造，使用右值引用初始化要求更高一些，要求右侧是一个临时的不能取地址的对象
         Test &&t2 = get_obj2();
         Test &&t3 = get_obj3();
+        // Test&& t4 = t; // Rvalue reference to type 'Test' cannot bind to lvalue of type 'Test'clang(lvalue_to_rvalue_ref)
+        Test &&t4 = std::move(t);
+        Test &&t5 = std::move(get_obj());
     }
     void test5() {
         Test t{};
@@ -200,7 +203,7 @@ namespace rvalue_reference_ns3 {
         forward(std::move(x)); // l-value: 111
         forward(250); // l-value: 250
     }
-    template<typename T>
+    template <typename T>
     void forward2(T &&k) {
         printValue(std::forward<T>(k));
     }
