@@ -74,3 +74,6 @@ add_executable(cpp11_move_forward cpp11_move_forward/main.cpp)
 
 # c++11 共享智能指针
 add_executable(cpp11_shared_ptr cpp11_shared_ptr/main.cpp)
+
+# c++11 独占的智能指针
+add_executable(cpp11_unique_ptr cpp11_unique_ptr/main.cpp)
