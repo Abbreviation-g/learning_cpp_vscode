@@ -71,3 +71,6 @@ add_executable(cpp11_rvalue_reference cpp11_rvalue_reference/main.cpp)
 
 # c++11 转移和完美转发
 add_executable(cpp11_move_forward cpp11_move_forward/main.cpp)
+
+# c++11 共享智能指针
+add_executable(cpp11_shared_ptr cpp11_shared_ptr/main.cpp)
