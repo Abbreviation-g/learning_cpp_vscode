@@ -80,3 +80,6 @@ add_executable(cpp11_unique_ptr cpp11_unique_ptr/main.cpp)
 
 # c++11 弱引用智能指针
 add_executable(cpp11_weak_ptr cpp11_weak_ptr/main.cpp)
+
+# c++11 强类型枚举
+add_executable(cpp11_enum cpp11_enum/main.cpp)
