@@ -2,31 +2,56 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "CMake: build",
-			"type": "shell",
+			"label": "CMake: configure (mingw)",
+			"type": "process",
 			"command": "cmake",
-			"args": ["--build", "${workspaceFolder}/build"],
+			"args": [
+				"--preset",
+				"mingw"
+			],
 			"options": {
-				"cwd": "${workspaceFolder}",
-				"env": {
-					"PATH": "C:\\MinGW\\bin;C:\\Program Files\\CMake\\bin;${env:PATH}"
-				}
-			},
-			"group": { "kind": "build", "isDefault": true },
-			"problemMatcher": ["$gcc"]
-		},
-		{
-			"label": "CMake: clean",
-			"type": "shell",
-			"command": "cmake",
-			"args": ["--build", "${workspaceFolder}/build", "--target", "clean"],
-			"options": {
-				"cwd": "${workspaceFolder}",
-				"env": {
-					"PATH": "C:\\MinGW\\bin;C:\\Program Files\\CMake\\bin;${env:PATH}"
-				}
+				"cwd": "${workspaceFolder}"
 			},
 			"problemMatcher": []
-		}
+		},
+		{
+			"label": "CMake: build (mingw build)",
+			"type": "process",
+			"command": "cmake",
+			"args": [
+				"--build",
+				"--preset",
+				"mingwbuild"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"dependsOn": [
+				"CMake: configure (mingw)"
+			],
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		},
+		{
+			"label": "CMake: clean (mingw build)",
+			"type": "process",
+			"command": "cmake",
+			"args": [
+				"--build",
+				"--preset",
+				"mingwbuild",
+				"--target",
+				"clean"
+			],
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"problemMatcher": []
+		},
 	]
 }

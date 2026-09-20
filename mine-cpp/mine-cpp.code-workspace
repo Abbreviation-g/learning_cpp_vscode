@@ -6,7 +6,7 @@
 	],
 	"settings": {
 		"terminal.integrated.env.windows": {
-			"PATH": "C:\\MinGW\\bin;C:\\Program Files\\CMake\\bin;${env:PATH}"
+			"PATH": "C:\\sw\\cmake\\cmake-3.26.3\\bin;${env:PATH}"
 		}
 	}
 }
