@@ -19,7 +19,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 # 将头文件搜索路径直接写入 compile_commands.json，便于 clangd 读取。
-set(CMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES OFF)
+set(CMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES ON)
 
 # 输出目录设置
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
@@ -34,22 +34,22 @@ add_executable(cpp11_mysql src/main.cpp)
 
 # MySQL Connector/C++ 头文件目录
 target_include_directories(cpp11_mysql PRIVATE
-	"C:/Program Files/MySQL/MySQL Server 8.0/include"
+	"${CMAKE_INSTALL_PREFIX}/include"
 )
 
 # MySQL 导入库所在目录
 target_link_directories(cpp11_mysql PRIVATE
-	"C:/Program Files/MySQL/MySQL Server 8.0/lib"
+	"${CMAKE_INSTALL_PREFIX}/lib"
 )
 
 # 链接 MySQL 客户端导入库
 target_link_libraries(cpp11_mysql PRIVATE
-	libmysql.lib
+	mysql
 )
 
 # 将 MySQL 客户端运行时 DLL 复制到可执行文件目录，便于直接运行程序。
 add_custom_command(TARGET cpp11_mysql POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy_if_different
-		"C:/Program Files/MySQL/MySQL Server 8.0/lib/libmysql.dll"
+		"${CMAKE_INSTALL_PREFIX}/lib/libmysql.dll"
 		"$<TARGET_FILE_DIR:cpp11_mysql>"
 )
