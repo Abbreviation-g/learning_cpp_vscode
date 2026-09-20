@@ -19,6 +19,10 @@
         {
             "name": "cpp23",
             "path": "cpp23"
+        },
+		{
+            "name": "cpp11_mysql",
+            "path": "cpp11_mysql"
         }
     ],
     "settings": {
