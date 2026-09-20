@@ -86,3 +86,6 @@ add_executable(cpp11_enum cpp11_enum/main.cpp)
 
 # c++11 扩展的 friend 语法
 add_executable(cpp11_friend cpp11_friend/main.cpp)
+
+# c++11 类成员的快速初始化
+add_executable(cpp11_quick_init cpp11_quick_init/main.cpp)
