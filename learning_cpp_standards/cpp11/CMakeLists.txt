@@ -89,3 +89,6 @@ add_executable(cpp11_friend cpp11_friend/main.cpp)
 
 # c++11 类成员的快速初始化
 add_executable(cpp11_quick_init cpp11_quick_init/main.cpp)
+
+# c++11 非受限联合体
+add_executable(cpp11_union cpp11_union/main.cpp)
