@@ -95,3 +95,15 @@ add_executable(cpp11_union cpp11_union/main.cpp)
 
 # c++11 long long 整形
 add_executable(cpp11_longlong cpp11_longlong/main.cpp)
+
+# c++11 noexcept
+add_executable(cpp11_noexcept cpp11_noexcept/main.cpp)
+
+# c++11 静态断言 static_assert
+add_executable(cpp11_static_assert cpp11_static_assert/main.cpp)
+
+# c++11 默认函数控制 =default 与 =delete
+add_executable(cpp11_default_delete cpp11_default_delete/main.cpp)
+
+# c++11 POD类型
+add_executable(cpp11_pod cpp11_pod/main.cpp)
