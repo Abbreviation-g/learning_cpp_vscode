@@ -92,3 +92,6 @@ add_executable(cpp11_quick_init cpp11_quick_init/main.cpp)
 
 # c++11 非受限联合体
 add_executable(cpp11_union cpp11_union/main.cpp)
+
+# c++11 long long 整形
+add_executable(cpp11_longlong cpp11_longlong/main.cpp)
