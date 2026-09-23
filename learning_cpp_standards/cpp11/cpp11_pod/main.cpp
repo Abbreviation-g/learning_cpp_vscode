@@ -373,7 +373,7 @@ namespace virtual_method_ns {
     }
     class Base2 {
     public:
-        virtual void print() {
+        virtual void print() { // 虚函数
             std::cout << "Base2::print" << std::endl;
         }
     };

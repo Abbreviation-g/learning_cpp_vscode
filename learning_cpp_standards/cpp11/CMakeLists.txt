@@ -107,3 +107,30 @@ add_executable(cpp11_default_delete cpp11_default_delete/main.cpp)
 
 # c++11 POD类型
 add_executable(cpp11_pod cpp11_pod/main.cpp)
+
+# c++11 call_once
+add_executable(cpp11_call_once cpp11_call_once/main.cpp)
+
+# c++11 多线程异步操作
+add_executable(cpp11_async cpp11_async/main.cpp)
+
+# c++11 原子变量
+add_executable(cpp11_atomic cpp11_atomic/main.cpp)
+
+# c++11 C++线程同步之条件变量
+add_executable(cpp11_condition cpp11_condition/main.cpp)
+
+# c++11 C++线程同步之互斥锁
+add_executable(cpp11_mutex cpp11_mutex/main.cpp)
+
+# c++11 命名空间 - this_thread
+add_executable(cpp11_this_thread cpp11_this_thread/main.cpp)
+
+# c++11 C++线程的使用
+add_executable(cpp11_thread cpp11_thread/main.cpp)
+
+# c++11 数值类型和字符串之间的转换
+add_executable(cpp11_convert cpp11_convert/main.cpp)
+
+# c++11 处理日期和时间的chrono库
+add_executable(cpp11_chrono cpp11_chrono/main.cpp)
