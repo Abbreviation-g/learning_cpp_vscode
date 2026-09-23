@@ -42,3 +42,9 @@ add_executable(cpp17_byte cpp17_byte/main.cpp)
 
 # C++17 std::charconv 特性演示 target
 add_executable(cpp17_charconv cpp17_charconv/main.cpp)
+
+# c++17 文件系统 - 文件路径以及文件的状态和属性
+add_executable(cpp17_filesystem1 cpp17_filesystem1/main.cpp)
+
+# c++17 文件系统 - 文件与目录的 CRUD
+add_executable(cpp17_filesystem cpp17_filesystem/main.cpp)
