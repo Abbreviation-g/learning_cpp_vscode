@@ -1,7 +1,11 @@
 #include <chrono>
 #include <ctime>
+#include <iomanip>
 #include <iostream>
 #include <ratio>
+#include <sstream>
+#include <stdexcept>
+#include <string>
 // https://subingwen.cn/cpp/chrono/
 // 处理日期和时间的chrono库
 
@@ -423,6 +427,157 @@ namespace time_point_cast_ns {
         print_ms(time_point_sec);
     }
 } // namespace time_point_cast_ns
+namespace time_distance_ns {
+
+    // 按 std::get_time 格式串解析本地日期时间，并转换为 system_clock 时间点。
+    std::chrono::system_clock::time_point date_string_to_time_point(
+        const std::string &date_string, const std::string &date_format) {
+        // 未指定日期时默认使用每月 1 日，未指定时间时默认为 00:00:00。
+        std::tm calendar_time = {};
+        calendar_time.tm_mday = 1;
+        std::istringstream date_stream{ date_string };
+        date_stream >> std::get_time(&calendar_time, date_format.c_str());
+        // 要求格式串成功解析整个输入，避免忽略尾部多余字符。
+        if (date_stream.fail() || date_stream.peek() != std::char_traits<char>::eof()) {
+            throw std::invalid_argument("date string does not match the given format");
+        }
+
+        // 保存解析结果；mktime 会规范化 tm，之后用原值检查日期时间是否合法。
+        const int expected_year = calendar_time.tm_year;
+        const int expected_month = calendar_time.tm_mon;
+        const int expected_day = calendar_time.tm_mday;
+        const int expected_hour = calendar_time.tm_hour;
+        const int expected_minute = calendar_time.tm_min;
+        const int expected_second = calendar_time.tm_sec;
+        // 由运行库根据本地时区确定夏令时状态；日期时间按本地时间解释。
+        calendar_time.tm_isdst = -1;
+        const std::time_t timestamp = std::mktime(&calendar_time);
+        if (timestamp == static_cast<std::time_t>(-1) || calendar_time.tm_year != expected_year ||
+            calendar_time.tm_mon != expected_month || calendar_time.tm_mday != expected_day ||
+            calendar_time.tm_hour != expected_hour || calendar_time.tm_min != expected_minute ||
+            calendar_time.tm_sec != expected_second) {
+            throw std::invalid_argument("date string is not a valid local date/time");
+        }
+
+        // 将本地日历时间对应的 time_t 转换为 system_clock 时间点。
+        return std::chrono::system_clock::from_time_t(timestamp);
+    }
+
+    // 按 std::put_time 格式串将 system_clock 时间点转换为本地日期时间字符串。
+    std::string time_point_to_date_string(
+        const std::chrono::system_clock::time_point &time_point, const std::string &date_format) {
+        const std::time_t timestamp = std::chrono::system_clock::to_time_t(time_point);
+        const std::tm *calendar_time = std::localtime(&timestamp);
+        if (calendar_time == nullptr) {
+            throw std::runtime_error("time point cannot be represented as local time");
+        }
+
+        std::ostringstream date_stream;
+        date_stream << std::put_time(calendar_time, date_format.c_str());
+        if (date_stream.fail()) {
+            throw std::runtime_error("date format could not be applied");
+        }
+        return date_stream.str();
+    }
+
+    // 将两个同一时钟的时间点之差转换为 Unit；Rep 控制结果类型及小数是否保留。
+    template <typename Rep, typename Clock, typename Duration1, typename Duration2, typename Unit>
+    Rep calculate_time_distance(const std::chrono::time_point<Clock, Duration1> &first_time,
+        const std::chrono::time_point<Clock, Duration2> &second_time, Unit) {
+        // 使用目标单位的周期和指定的 Rep 构造结果 duration，再读取其计数。
+        typedef std::chrono::duration<Rep, typename Unit::period> ResultDuration;
+        return std::chrono::duration_cast<ResultDuration>(second_time - first_time).count();
+    }
+
+    // 用固定的 2 小时 30 分钟间隔演示整数和浮点单位换算。
+    void test() {
+        typedef std::chrono::steady_clock Clock;
+        Clock::time_point start_time{};
+        Clock::time_point end_time = start_time + std::chrono::hours{ 2 } +
+                                     std::chrono::minutes{ 30 } + std::chrono::seconds{ 101 };
+
+        // 整数小时会截断半小时；分钟和秒则可精确表示该间隔。
+        auto distance_hour = calculate_time_distance<std::chrono::hours::rep>(
+            start_time, end_time, std::chrono::hours{ 1 });
+        auto distance_min = calculate_time_distance<std::chrono::minutes::rep>(
+            start_time, end_time, std::chrono::minutes{ 1 });
+        auto distance_sec = calculate_time_distance<std::chrono::seconds::rep>(
+            start_time, end_time, std::chrono::seconds{ 1 });
+        std::cout << "Time distance: " << distance_hour << " hours, " << distance_min
+                  << " minutes, " << distance_sec << " seconds\n";
+
+        double distance_hour_float =
+            calculate_time_distance<double>(start_time, end_time, std::chrono::hours{ 1 });
+        std::cout << "Time distance (floating hours): " << distance_hour_float << " hours\n";
+    }
+
+    // 演示两个日期字符串之间相差多少个平均公历年。
+    void test2() {
+        std::chrono::system_clock::time_point date1 =
+            date_string_to_time_point("2024-02-18 10:11:22", "%Y-%m-%d %H:%M:%S");
+        std::chrono::system_clock::time_point date2 =
+            date_string_to_time_point("2026-10-08", "%Y-%m-%d");
+
+        // 平均公历年按 365.2425 天（31556952 秒）计算，不等同于某个具体日历年。
+        typedef std::chrono::duration<double, std::ratio<31556952>> AverageGregorianYears;
+        const double years =
+            calculate_time_distance<double>(date1, date2, AverageGregorianYears{ 1 });
+        std::cout << "Date difference: " << years << " average Gregorian years\n";
+    }
+
+    // 演示将日期转换为时间点后，读取它相对 Unix epoch 的秒数。
+    void test3() {
+        const auto *date_str = "2026/01/01 11:12:13";
+        const auto *date_format_str = "%Y/%m/%d %H:%M:%S";
+
+        const std::chrono::system_clock::time_point date =
+            date_string_to_time_point(date_str, date_format_str);
+        const std::string formated_date_str = time_point_to_date_string(date, "%Y-%m-%d %H:%M:%S");
+        std::cout << "Formatted date: " << formated_date_str << "\n";
+
+        // time_since_epoch 返回时间间隔，再转换为整数秒用于输出。
+        const std::chrono::seconds seconds_since_epoch =
+            std::chrono::duration_cast<std::chrono::seconds>(date.time_since_epoch());
+        std::cout << "2026-01-01 epoch seconds: " << seconds_since_epoch.count() << "\n";
+    }
+
+    void test4() {
+        const std::string date1_str = "2026/01/01 00:00:00";
+        const std::string date2_str = "2026/01/01 01:12:13";
+        const std::string date_format_str = "%Y/%m/%d %H:%M:%S";
+        const std::string other_date_format_str = "%Y-%m-%d %H:%M:%S";
+
+        // 测试字符串转换为时间点
+        const std::chrono::system_clock::time_point date1 =
+            date_string_to_time_point(date1_str, date_format_str);
+        // 测试时间点转换为字符串
+        const std::string formated_date1_str =
+            time_point_to_date_string(date1, other_date_format_str);
+        std::cout << "Formatted date1: " << formated_date1_str
+                  << "\n"; // Formatted date1: 2026-01-01 00:00:00
+
+        const std::chrono::system_clock::time_point date2 =
+            date_string_to_time_point(date2_str, date_format_str);
+        const std::string formated_date2_str =
+            time_point_to_date_string(date2, other_date_format_str);
+        std::cout << "Formatted date1: " << formated_date2_str
+                  << "\n"; // Formatted date1: 2026-01-01 01:12:13
+
+        // 测试计算时间点间隔
+        double distance_hour_float =
+            calculate_time_distance<double>(date1, date2, std::chrono::hours{ 1 });
+        std::cout << "Time distance (floating hours): " << distance_hour_float
+                  << " hours\n"; // Time distance (floating hours): 1.20361 hours
+        double distance_minute_float =
+            calculate_time_distance<double>(date1, date2, std::chrono::minutes{ 1 });
+        std::cout << "Time distance (floating minutes): " << distance_minute_float
+                  << " minutes\n"; // Time distance (floating minutes): 72.2167 minutes
+        double distance_second_float =
+            calculate_time_distance<double>(date1, date2, std::chrono::seconds{ 1 });
+        std::cout << "Time distance (floating seconds): " << distance_second_float
+                  << " seconds\n"; // Time distance (floating seconds): 4333 seconds
+    }
+} // namespace time_distance_ns
 int main() {
     std::cout << "====================\n";
     duration_ns::test();
@@ -442,4 +597,12 @@ int main() {
     duration_cast_ns::testxx();
     std::cout << "====================\n";
     time_point_cast_ns::test1();
+    std::cout << "====================\n";
+    time_distance_ns::test();
+    std::cout << "====================\n";
+    time_distance_ns::test2();
+    std::cout << "====================\n";
+    time_distance_ns::test3();
+    std::cout << "====================\n";
+    time_distance_ns::test4();
 }
