@@ -545,9 +545,15 @@ namespace array_ns {
         const T *data() const noexcept {
             return m_arr;
         }
+        void print() const {
+            for (const auto &i : m_arr) {
+                std::cout << i << ", ";
+            }
+            std::cout << "\n";
+        }
 
-        static void print_s(const My_Array<T, size> &arr) {
-            for (auto i : arr) {
+        static void print(const My_Array<T, size> &arr) {
+            for (const auto &i : arr) {
                 std::cout << i << ", ";
             }
             std::cout << "\n";
@@ -561,38 +567,39 @@ namespace array_ns {
         return std::vector<int>{ 1, 2 };
     }
     void test() {
-        const int size = 5;
+        constexpr int size = 5;
         int arr[size]{ 1, 3, 5, 7, 9 };
         My_Array<int, size> my_arr{ arr };
-        My_Array<int, size>::print_s(my_arr); // 1, 3, 5, 7, 9,
+        My_Array<int, size>::print(my_arr); // 1, 3, 5, 7, 9,
 
         int *ptr = arr;
         My_Array<int, size> my_arr2{ ptr };
-        My_Array<int, size>::print_s(my_arr2); // 1, 3, 5, 7, 9,
+        My_Array<int, size>::print(my_arr2); // 1, 3, 5, 7, 9,
 
         My_Array<int, size> my_arr3{ my_arr };
         my_arr3 = my_arr2;
         my_arr3 = std::move(my_arr2);
 
-        my_arr2.print_s(my_arr2); // 1, 3, 5, 7, 9,
-        my_arr3.print_s(my_arr3); // 1, 3, 5, 7, 9,
+        my_arr2.print(my_arr2); // 1, 3, 5, 7, 9,
+        my_arr3.print(my_arr3); // 1, 3, 5, 7, 9,
 
         std::vector v = create();
 
         const char *strs[size] = { "x", "y", "z", "a", "b" };
         using mm = My_Array<const char *, size>;
+        typedef My_Array<const char *, size> mm2;
         mm strs1{ strs };
-        My_Array<const char *, size> strs2{ strs1 };
+        mm2 strs2{ strs1 };
         strs2 = std::move(strs1);
-        My_Array<const char *, size>::print_s(strs1); // x, y, z, a, b,
-        My_Array<const char *, size>::print_s(strs2); // x, y, z, a, b,
+        My_Array<const char *, size>::print(strs1); // x, y, z, a, b,
+        My_Array<const char *, size>::print(strs2); // x, y, z, a, b,
 
         std::string strss[size] = { "x", "y", "z", "a", "b" };
         My_Array<std::string, size> strss1{ strss };
         My_Array<std::string, size> strss2{ strss1 };
         strss2 = std::move(strss1);
-        My_Array<std::string, size>::print_s(strss1); // , , , , ,
-        My_Array<std::string, size>::print_s(strss2); // x, y, z, a, b,
+        My_Array<std::string, size>::print(strss1); // , , , , ,
+        My_Array<std::string, size>::print(strss2); // x, y, z, a, b,
         My_Array<std::string, size> strss3{ std::move(strss2) };
 
         auto print_all = [](const auto &x) {
@@ -602,6 +609,9 @@ namespace array_ns {
             std::cout << "\n";
         };
         print_all(strss2);
+        strss3.print();
+
+        using mm3 = My_Array<std::string, size>;
     }
 } // namespace array_ns
 int main() {

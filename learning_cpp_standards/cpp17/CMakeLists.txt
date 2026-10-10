@@ -48,3 +48,18 @@ add_executable(cpp17_filesystem1 cpp17_filesystem1/main.cpp)
 
 # c++17 文件系统 - 文件与目录的 CRUD
 add_executable(cpp17_filesystem cpp17_filesystem/main.cpp)
+
+# c++17 搜索器
+add_executable(cpp17_search cpp17_search/main.cpp)
+
+# c++17 多线程之读写锁
+add_executable(cpp17_shared_mutex cpp17_shared_mutex/main.cpp)
+
+# c++17 智能指针的增强
+add_executable(cpp17_smart_pointer cpp17_smart_pointer/main.cpp)
+
+# c++17 并行算法
+add_executable(cpp17_parallel_algorithms cpp17_parallel_algorithms/main.cpp)
+
+# c++17 将左值引用转换为常量引用 - std::as_const
+add_executable(cpp17_as_const cpp17_as_const/main.cpp)
