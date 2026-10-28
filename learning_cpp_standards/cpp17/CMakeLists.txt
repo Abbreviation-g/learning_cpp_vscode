@@ -63,3 +63,18 @@ add_executable(cpp17_parallel_algorithms cpp17_parallel_algorithms/main.cpp)
 
 # c++17 将左值引用转换为常量引用 - std::as_const
 add_executable(cpp17_as_const cpp17_as_const/main.cpp)
+
+# c++17 字符串视图（非拥有视图）- string_view
+add_executable(cpp17_string_view cpp17_string_view/main.cpp)
+
+# c++17 薛定谔的盒子 - std::optional
+add_executable(cpp17_optional cpp17_optional/main.cpp)
+
+# c++17 类型安全的联合体 -- std::variant
+add_executable(cpp17_variant cpp17_variant/main.cpp)
+
+# c++17 类型安全的任意类型容器 - std::any
+add_executable(cpp17_any cpp17_any/main.cpp)
+
+# c++17 std::map/set/unordered_map/unordered_set 的改进
+add_executable(cpp17_map_set cpp17_map_set/main.cpp)
