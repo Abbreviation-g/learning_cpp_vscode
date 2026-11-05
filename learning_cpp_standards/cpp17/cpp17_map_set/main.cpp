@@ -229,6 +229,49 @@ namespace ns3 {
         m1.insert_or_assign(1, 10);
     }
 } // namespace ns3
+
+namespace ns4 {
+    class A;
+    class B;
+    class A {
+    private:
+        int a;
+
+    public:
+        int get() const {
+            return a;
+        }
+        explicit A(int aa) : a(aa) {}
+        explicit operator B() const;
+    };
+    class B {
+    private:
+        int b;
+
+    public:
+        explicit B(int bb) : b(bb) {}
+        int get() const {
+            return b;
+        }
+        explicit operator A() {
+            return A{ b };
+        }
+    };
+
+    A::operator B() const {
+        return B{ a };
+    }
+
+    void test() {
+        A a{ 10086 };
+        B b{ 100 };
+        a = static_cast<A>(b);
+        std::cout << "a.a: " << a.get() << std::endl;
+
+        B converted = static_cast<B>(a);
+        std::cout << "converted.b: " << converted.get() << std::endl;
+    }
+} // namespace ns4
 int main(int argc, char *argv[]) {
     ns1::test();
     ns1::test2();
@@ -237,4 +280,6 @@ int main(int argc, char *argv[]) {
     ns2::test2();
 
     ns3::test();
+
+    ns4::test();
 }

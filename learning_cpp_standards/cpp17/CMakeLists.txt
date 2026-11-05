@@ -78,3 +78,27 @@ add_executable(cpp17_any cpp17_any/main.cpp)
 
 # c++17 std::map/set/unordered_map/unordered_set 的改进
 add_executable(cpp17_map_set cpp17_map_set/main.cpp)
+
+# c++17 通用否定器 - std::not_fn
+add_executable(cpp17_not_fn cpp17_not_fn/main.cpp)
+
+# c++17 终极元组解包器 - std::apply / std::make_from_tuple
+add_executable(cpp17_apply cpp17_apply/main.cpp)
+
+# c++17 万能调用神技 std::invoke
+add_executable(cpp17_invoke cpp17_invoke/main.cpp)
+
+# c++17 类模板参数推导
+add_executable(cpp17_ctad cpp17_ctad/main.cpp)
+
+# c++17 带有 auto 类型的非类型模板参数
+add_executable(cpp17_template_auto cpp17_template_auto/main.cpp)
+
+# c++17 折叠表达式
+add_executable(cpp17_fold_expressions cpp17_fold_expressions/main.cpp)
+
+# c++17 枚举的直接列表初始化 - 对 enum class 的改进
+add_executable(cpp17_enum_init cpp17_enum_init/main.cpp)
+
+# c++17 带有基类的聚合类
+add_executable(cpp17_aggregate cpp17_aggregate/main.cpp)
