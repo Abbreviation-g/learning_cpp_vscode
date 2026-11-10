@@ -102,3 +102,25 @@ add_executable(cpp17_enum_init cpp17_enum_init/main.cpp)
 
 # c++17 带有基类的聚合类
 add_executable(cpp17_aggregate cpp17_aggregate/main.cpp)
+
+# c++17 属性增强
+add_executable(cpp17_attributes cpp17_attributes/main.cpp)
+# 为 cpp17_attributes 添加编译选项 -Wno-unused-result，仅对 GNU 和 Clang 编译器生效，不影响其他 target。
+# target_compile_options(cpp17_attributes PRIVATE
+#     $<$<CXX_COMPILER_ID:GNU,Clang>:-Wno-unused-result>
+# )
+
+# c++17 嵌套命名空间
+add_executable(cpp17_namespace cpp17_namespace/main.cpp)
+
+# c++17 UTF-8字面量和十六进制浮点数字面量
+add_executable(cpp17_u8_0x_literal cpp17_u8_0x_literal/main.cpp)
+
+# c++17 类型萃取
+add_executable(cpp17_type_traits cpp17_type_traits/main.cpp)
+
+# c++17 constexpr if
+add_executable(cpp17_constexpr_if cpp17_constexpr_if/main.cpp)
+
+# c++17 内联变量
+add_executable(cpp17_inline_variables cpp17_inline_variables/main.cpp cpp17_inline_variables/constants.cpp)

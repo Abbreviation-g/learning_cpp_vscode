@@ -1,3 +1,5 @@
+#include <utility>
+#include <vector>
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #define NOMINMAX
@@ -22,7 +24,8 @@ constexpr int get_value() {
 void test_if_init() {
     std::cout << "=== Feature 1: if with init-statement ===\n\n";
 
-    std::map<std::string, std::string> addrs{ { "csdn", "https://blog.csdn.net/fengbingchun/" }, { "github", "https://github.com/fengbingchun" } };
+    std::map<std::string, std::string> addrs{ { "csdn", "https://blog.csdn.net/fengbingchun/" },
+        { "github", "https://github.com/fengbingchun" } };
 
     // C++17: if (init; condition)
     if (auto it = addrs.find("github"); it != addrs.end())
@@ -35,7 +38,8 @@ void test_if_init() {
         std::cout << "csdn: " << it->second << "\n";
 
     // 配合结构化绑定
-    if (auto [it, inserted] = addrs.insert({ "gitee", "https://gitee.com/fengbingchun/test.git" }); !inserted)
+    if (auto [it, inserted] = addrs.insert({ "gitee", "https://gitee.com/fengbingchun/test.git" });
+        !inserted)
         std::cout << "already exists\n";
     else
         std::cout << "inserted: key=" << it->first << ", value=" << it->second << "\n";
@@ -50,9 +54,8 @@ void test_if_init() {
 
     // 配合 any_of 使用
     const std::string str{ "if" };
-    if (auto keywords = { "if", "for", "while" }; std::any_of(keywords.begin(), keywords.end(), [&str](const char *kw) {
-            return str == kw;
-        }))
+    if (auto keywords = { "if", "for", "while" };
+        std::any_of(keywords.begin(), keywords.end(), [&str](const char *kw) { return str == kw; }))
         std::cout << "Error: Token must not be a keyword\n";
 }
 
@@ -88,7 +91,7 @@ void test_switch_init() {
 // 编译期条件分支，只编译匹配的代码路径
 // ============================================================
 
-template <typename T>
+template<typename T>
 auto show(T t) {
     // if constexpr 在编译期求值，非指针路径的 *t 不会被编译
     if constexpr (std::is_pointer_v<T>)
@@ -97,10 +100,11 @@ auto show(T t) {
         return t; // 仅对非指针类型编译此分支
 }
 
-template <typename T>
+template<typename T>
 void print_value(const T &value) {
     if constexpr (std::is_same_v<T, std::string>)
-        std::cout << "type: std::string, value: " << value << ", length: " << value.length() << "\n";
+        std::cout << "type: std::string, value: " << value << ", length: " << value.length()
+                  << "\n";
     else if constexpr (std::is_same_v<T, int>)
         std::cout << "type: int, value: " << value << "\n";
     else if constexpr (std::is_same_v<T, float>)
@@ -130,6 +134,96 @@ void test_if_constexpr() {
 // Main
 // ============================================================
 
+// if/switch 语句中的初始化器
+// https://subingwen.cn/cpp/if-switch/
+namespace ns1 {
+    void test() {
+        std::map<int, std::string> my_data{ { 1, "apple" }, { 2, "banana" } };
+
+        // --- 痛点写法 (C++17之前) ---
+        // 第 1 步：我们必须在 if 外面先声明这个变量
+        std::map<int, std::string>::iterator it;
+        // 第 2 步：在 if 里面进行初始化和赋值
+        if ((it = my_data.find(2)) != my_data.end()) {
+            // 第 3 步：在这里使用 it
+            std::cout << "found: " << it->second << "\n";
+        }
+
+        // C++17 允许我们把变量的初始化直接写在 if 或 switch 的条件判断之前
+        if (auto it2 = my_data.find(1); it2 != my_data.end()) {
+            // 第 3 步：在这里使用 it
+            std::cout << "found: " << it2->second << "\n";
+        }
+    }
+
+    // 1. 模拟一个可能获取不到资源的函数
+    std::pair<bool, int> get_resource(int id) {
+        if (id > 0) {
+            return { true, id * 100 };
+        }
+        return { false, 0 };
+    }
+    void test2() {
+        std::map<int, std::string> my_data = { { 1, "Apple" }, { 2, "Banana" } };
+        // --- C++17 新写法 ---
+        // 1. 定义变量 it
+        // 2. 初始化 it (执行 find)
+        // 3. 检查 it 是否等于 end()
+        // 中间用分号 ; 隔开
+        if (auto it = my_data.find(2); it != my_data.end()) {
+            std::cout << "Found inside if: " << it->second << std::endl;
+        } else {
+            std::cout << "Not found." << std::endl;
+        }
+
+        if (auto [success, value] = get_resource(5); success) {
+            std::cout << "成功: 获取到值 " << value << std::endl;
+        } else {
+            std::cout << "失败: 资源不可用" << std::endl;
+        }
+    }
+
+    enum class Command : char { Start, Stop, Pause };
+    std::vector<std::string> system_logs{};
+    void test3() {
+        // 1.2 switch 语句初始化器详解
+        // 同样的规则也适用于
+        // switch。这在处理状态机或枚举时非常有用。假设我们有一个设备状态，需要根据控制器的命令来把详细的日志信息构建出来并存储。
+        Command cmd = Command::Start;
+        std::string device_status = "Idle";
+
+        std::cout << "=== 执行命令 ===" << std::endl;
+
+        // --- C++17 Switch 写法 (改进版) ---
+        // 初始化临时日志变量 msg
+        switch (std::string msg = "Log Device"; cmd) {
+        case Command::Start:
+            msg += "started successfully.";
+            device_status = "Running";
+            // 逻辑意义：把处理结果存入系统日志
+            system_logs.push_back(msg);
+            break;
+        case Command::Stop:
+            msg += "stopped by user.";
+            device_status = "Stopped";
+            system_logs.push_back(msg);
+            break;
+
+        case Command::Pause:
+            msg += "paused temporarily.";
+            device_status = "Paused";
+            system_logs.push_back(msg);
+            break;
+
+        default:
+            break;
+        }
+        // switch 结束，msg 被销毁，但它留下的痕迹在 system_logs 里
+        // 打印刚才生成的日志，证明 msg 确实起作用了
+        std::cout << "System Logs: [" << system_logs.back() << "]" << std::endl;
+    }
+} // namespace ns1
+
 int main() {
 #ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8);
@@ -144,5 +238,9 @@ int main() {
     test_if_constexpr();
 
     std::cout << "\nDone!\n";
+
+    ns1::test();
+    ns1::test2();
+    ns1::test3();
     return 0;
 }
